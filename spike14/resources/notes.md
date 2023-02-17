@@ -1,6 +1,6 @@
 ## Spike 14 notes
 
-## React Router
+## React Router Intro
 
 - **React Router** is React's answer to "pages". React is a single page application, which means that it's really only a single index.html file which we then use JavaScript to fill dynamically. React Router let's you set "routes" that will render specific page components when that route is visited. 
 
@@ -70,39 +70,67 @@ function Navbar() {
 ```
 - We can manually put this component into every page, but if we instead put it on the App.js file outside the **&lt;Routes&gt;** component, you'll notice that it will be on every page. 
 
-- Another way to navigate between pages is to use React Router's useNavigate hook/Navigate component. These are the same thing, React Router have just given us two ways to access the same functionality. Let's experiment by using the Navigate component to navigate away from our Error page. If you include the props **replace={true}**, it was remove the error page from the history. Now, if you click the back button on the browser after being redirected, you won't be taken back to the error page.
-
-- This all happens incredibly fast, it might be confusing for the user to just end up back on the homepage when they though they were going somewhere else. We could give our redirect a timeout! Create a state to hold the redirect status: true or false. Then we can use a timeout function to set it to true after the time has elapsed. We'll then have our **&lt;Navigate&gt;** component render only when the redirect state is true. Alternatively, you can create a variable to hold the useNavigate hook functionality, then call this function after your timeout has elapsed. You could even include a countdown! 
-
-- It's also possible to nest routes inside each other. Let's use our About page as an example, and create one sub-route for 'about the app developer', and one for 'about the app content'. So far, we've been self-closing our **&lt;Route&gt;** componenets. If we create seperate opening and closing tags for our About route, we can then nest sub-routes inside. You can even create a sub-index, and a sub-404 within the parent **&lt;Route&gt;**. eg:
+- How can we indicate to our user which page they're on in React, since the same component is rendered across multiple pages? One way is to use React Router's **useLocation** hook. We can get information about the current page by assigning it to a variable, and logging it to the console. One property is **pathname** - this shows you the current page URL. We can then create some conditional style or className attributes on our **&lt;Link&gt;** component. A nice clean way to do this is to use a **Ternary Operator**. Think of this as a shorter way of writing an if.. else.. statement! The first 'statement' is the 'if' followed by a **question mark** ( **?** ), and the value to be supplied if that statement is _true_. This is then followed by a **colon** ( **:** ), and the value to be supplied if the initial statement is _false_. eg:
 
 ```js
-import { Routes, Route } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import Error404 from "./pages/Error404";
-import About from "./pages/About";
-import AboutDev from "./pages/AboutDev";
-import AboutApp from "./pages/AboutApp";
+import { Link } from "react-router-dom";
 
-function App() {
+function Navbar() {
+  const location = useLocation();
   return (
-    <Routes>
-      <Route path="/" element={ <Homepage /> } />
-      <Route path="*" element={ <Error404 /> } />
-      <Route path='about' element={ <About /> }>
-        <Route path='dev' element={ <AboutDev /> } />
-        <Route path='app' element={ <AboutApp /> } />
-      </Route>
-    </Routes>
-  );
+    <nav>
+      <Link to="/" className={ location.pathname === "/" ? "active" : null }>Home</Link>
+      <Link to="/about" className={ location.pathname === "/about" ? "active" : null }>About</Link>
+    </nav>
+  )
 }
 ```
-- This will create valid paths for 'about/dev' and 'about/app'. If we visit those routes now, though, we're still only going to see the About component. The last step is to put React Router's **&lt;Outlet /&gt;** component onto our About page component. This will render the element linked to the sub-path! You can use it to add sub-content to your About page.
 
-- Say, though, that we want to replace the entire page content. We don't want the initial About component's content there when we're visiting a sub-route. One possible way around this is React Router's **useLocation** hook. We can get information about the current page by assigning it to a variable, and logging it to the console. One property is **pathname** - this shows you the current page URL. We can then do some conditional rendering, when we're on one of our sub-routes, we will render the **&lt;Outlet /&gt;** component, but if we're not, then we can show the base About page content.
-
-- We could then create an in-app back button using the **useNavigate** hook. Create a variable to hold the function, then call it on an onClick event - but instead of putting a path, if we put -1, we will be directed to the previous page in the history. eg:
+- Another way to achieve the same result is to use a different component supplied by React Router called **&lt;NavLink&gt;**, which has an active class without the need for useLocation. It needs to be imported from 'react-router-dom'. It can then be applied in almost the exact same way as a regular **&lt;Link&gt;**, except that instead of an expression, our className/style property will take a function. This function recieves a parameter which will be true or false according to the active state. We can then use a Ternary Operator to either return our string/inline style or null. eg:
 
 ```js
-<button onClick={() => navigate(-1)}>Back...</button>
+import { NavLink } from "react-router-dom";
+
+function Navbar() {
+  return (
+    <nav>
+      <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/"}>Home</NavLink>
+      <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/about"}>About</NavLink>
+    </nav>
+  )
+}
 ```
+
+- React Router's useNavigate hook/Navigate component can also be used to navigate between pages. These are the same thing, React Router have just given us two ways to access the same functionality. Let's experiment by using the useNavigate hook function component to create a back button from our Error page. If you include the props **replace={true}**, it will remove the error page from the history. Now, if you click the back button on the browser, you won't be taken back to the error page. eg:
+
+```js
+import { useNavigate } from "react-router-dom";
+
+function Error404() {
+  const navigate = useNavigate()
+  return (
+    <div>
+      <h1>Error404</h1>
+      <button onClick={() => navigate(-1)}>Back...</button>
+    </div>
+  )
+}
+
+export default Error404
+```
+
+- Or, if we want to redirect our user automatically, we can call the function in a useEffect. Alternatively, to achieve the same result using the **&lt;Navigate&gt;** component, put the component into our return (the same as any other component) and set the **to** props to the path we want to redirect to. eg:
+
+```js
+import { Navigate } from "react-router-dom";
+
+function Error404() {
+  return (
+    <Navigate to={"/"} replace={true} />
+  )
+}
+
+export default Error404
+```
+
+- This all happens incredibly fast though, and it might be confusing for the user to just end up back on the homepage when they though they were going somewhere else. We could give our redirect a timeout! Create a state to hold the redirect status: true or false. Then we can use a timeout function to set it to true after the time has elapsed. We'll then have our **&lt;Navigate&gt;** component render (or navigate function invoke) only when the redirect state is true. You could even include a countdown! 
