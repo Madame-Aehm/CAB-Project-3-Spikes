@@ -2,7 +2,7 @@
 
 ## React Router Intro
 
-- **React Router** is React's answer to "pages". React is a single page application, which means that it's really only a single index.html file which we then use JavaScript to fill dynamically. React Router let's you set "routes" that will render specific page components when that route is visited. 
+- **React Router** is React's answer to "pages". React is a single page application, which means that it's really only a single index.html file which we then use JavaScript to fill dynamically. React Router lets you set "routes" that will render specific page components when that route is visited. 
 
 - React router isn't included in the initial npx create-react-app package, so we'll start by installing it through the terminal:
 ```
@@ -68,7 +68,7 @@ function Navbar() {
   )
 }
 ```
-- We can manually put this component into every page, but if we instead put it on the App.js file outside the **&lt;Routes&gt;** component, you'll notice that it will be on every page. 
+- We could manually put this component into every page, but if we instead put it on the App.js file outside the **&lt;Routes&gt;** component, you'll notice that it will be on every page. 
 
 - How can we indicate to our user which page they're on in React, since the same component is rendered across multiple pages? One way is to use React Router's **useLocation** hook. We can get information about the current page by assigning it to a variable, and logging it to the console. One property is **pathname** - this shows you the current page URL. We can then create some conditional style or className attributes on our **&lt;Link&gt;** component. A nice clean way to do this is to use a **Ternary Operator**. Think of this as a shorter way of writing an if.. else.. statement! The first 'statement' is the 'if' followed by a **question mark** ( **?** ), and the value to be supplied if that statement is _true_. This is then followed by a **colon** ( **:** ), and the value to be supplied if the initial statement is _false_. eg:
 
