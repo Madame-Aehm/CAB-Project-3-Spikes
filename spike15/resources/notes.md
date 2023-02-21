@@ -46,4 +46,31 @@ function Navbar() {
 }
 ```
 
-### Dynamic Routes
+### Dynamic Routes (URL Parameters)
+
+- Some of you may have used **URL parameters** in your last project. If you didn't, you also very likely used them one or more of the endpoints from your API. This refers to dynamic values that the file being requested can then access. 
+
+- On the homepage of our app, let's make a fetch request to the Rick and Morty API. We can make a small card component to display each character, like what we did for the practice challenge. But instead of opening a model, I'm going to link to a new page.
+
+- In my pages folder, I will create a page component to be the landing page for my dynamic route. Then, in my App.js, I will link it to a new **&lt;Route&gt;**. I'm going to set the path to **"character/:id"**. ie:
+
+```js
+import { Routes, Route } from "react-router-dom";
+import Homepage from "./pages/Homepage";
+import Error404 from "./pages/Error404";
+import Character from ".pages/Character";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={ <Homepage /> } />
+      <Route path="*" element={ <Error404 /> } />
+      <Route path="character/:id" element={ <Character /> } >
+    </Routes>
+  );
+}
+```
+
+- The colon **( : )** is React Router's way of referring to the URL parameters. The path is 'character', then we're seperating the params with a **slash** **( / )**. The 'id' is arbitrary, much the same as parameters for a function. I can now set the path on my **&lt;Link&gt;** to take me to the 'character' path, but I am going to substitute the ':id' in the URL for the id of my character. 
+
+- On the component that is our Character page, we can now use React Router's **useParams()** hook to access that id! If we create a variable to take the return of the hook, we can now view all our params. Since we have only one, it's a nice opportunity to **destructure** the return. 

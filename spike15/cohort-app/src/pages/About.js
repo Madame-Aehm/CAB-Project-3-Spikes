@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 
 function About() {
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   return (
     <div>
       { location.pathname.includes("dev") || location.pathname.includes("app") ? <Outlet /> : 

@@ -7,6 +7,7 @@ import Error404 from './pages/Error404';
 import Navbar from './components/Navbar';
 import AboutDev from './pages/AboutDev';
 import AboutApp from './pages/AboutApp';
+import Character from './pages/Character';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
       <Routes>
         {/* <Route path='/' element={ <Home /> }/> */}
         <Route index element={ <Home /> } />
+
+        <Route path='character/:id' element={ <Character /> } />
 
         <Route path='about' element={ <About /> }>
           {/* <Route index element={ <AboutDev /> } /> */}
