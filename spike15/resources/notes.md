@@ -1,6 +1,6 @@
 ## Spike 15 notes
 
-## Dynamic and Nested Routes
+## React Router Continued...
 
 ### Nested Routes
 
@@ -71,6 +71,12 @@ function App() {
 }
 ```
 
-- The colon **( : )** is React Router's way of referring to the URL parameters. The path is 'character', then we're seperating the params with a **slash** **( / )**. The 'id' is arbitrary, much the same as parameters for a function. I can now set the path on my **&lt;Link&gt;** to take me to the 'character' path, but I am going to substitute the ':id' in the URL for the id of my character. 
+- The colon **( : )** is React Router's way of referring to the URL parameters. The path is 'character', then we're seperating the params with a **slash** **( / )**. The 'id' is arbitrary, much the same as parameters for a function. I can now set the path on my **&lt;Link&gt;** to take me to the 'character' path, but I am going to substitute the ':id' in the URL for the id of my character. I could do this with a plus, to add two strings together, or I can use **template literals**.
 
-- On the component that is our Character page, we can now use React Router's **useParams()** hook to access that id! If we create a variable to take the return of the hook, we can now view all our params. Since we have only one, it's a nice opportunity to **destructure** the return. 
+```js
+<Link to={`character/${c.id}`} >Learn more..</Link>
+```
+
+- On the component that is our Character page, we can now use React Router's **useParams()** hook to access that id! If we create a variable to take the return of the hook, we can now view all our params. Since we have only one, it's a nice opportunity to **destructure** the return. Now that I've got the ID of the character, I can do a fetch for specifically that character. 
+
+- Take care to either verify the ID before doing the fetch, or to add a conditional to catch any errors. If there isn't a response from the API from the parameters, have some conditional rendering to signal that to the user. 
