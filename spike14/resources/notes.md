@@ -1,4 +1,4 @@
-## Spike 14 notes
+# Spike 14 notes
 
 ## React Router Intro
 
@@ -70,7 +70,9 @@ function Navbar() {
 ```
 - We could manually put this component into every page, but if we instead put it on the App.js file outside the **&lt;Routes&gt;** component, you'll notice that it will be on every page. 
 
-- How can we indicate to our user which page they're on in React, since the same component is rendered across multiple pages? One way is to use React Router's **useLocation** hook. We can get information about the current page by assigning it to a variable, and logging it to the console. One property is **pathname** - this shows you the current page URL. We can then create some conditional style or className attributes on our **&lt;Link&gt;** component. A nice clean way to do this is to use a **Ternary Operator**. Think of this as a shorter way of writing an if.. else.. statement! The first 'statement' is the 'if' followed by a **question mark** ( **?** ), and the value to be supplied if that statement is _true_. This is then followed by a **colon** ( **:** ), and the value to be supplied if the initial statement is _false_. eg:
+- Some data can be transferred through the Link component, which accepts a prop called **state**. Whatever is passed as state props, can then be access on the recieving end (ie. the path component) by using React Router's **useLocation()** hook. We can get information about the current page by assigning the return of this hook to a variable, and logging to the console.
+
+- This location object also holds a property called **pathname**. We can use this to indicate to our user which page they're on in React. Since the same component is rendered across multiple pages, the pathname shows you the current page URL. We can then create some conditional style or className attributes on our **&lt;Link&gt;** component. A nice clean way to do this is to use a **Ternary Operator**. Think of this as a shorter way of writing an if.. else.. statement! The first 'statement' is the 'if' followed by a **question mark** ( **?** ), and the value to be supplied if that statement is _true_. This is then followed by a **colon** ( **:** ), and the value to be supplied if the initial statement is _false_. eg:
 
 ```js
 import { Link } from "react-router-dom";
@@ -86,7 +88,7 @@ function Navbar() {
 }
 ```
 
-- Another way to achieve the same result is to use a different component supplied by React Router called **&lt;NavLink&gt;**, which has an active class without the need for useLocation. It needs to be imported from 'react-router-dom'. It can then be applied in almost the exact same way as a regular **&lt;Link&gt;**, except that instead of an expression, our className/style property will take a function. This function recieves a parameter which will be true or false according to the active state. We can then use a Ternary Operator to either return our string/inline style or null. eg:
+- Another way to achieve the same result is to use a different component supplied by React Router called **&lt;NavLink&gt;**, which has an active class without the need for useLocation. It needs to be imported from 'react-router-dom', and can then be applied in almost the exact same way as a regular **&lt;Link&gt;**, except that instead of an expression, our className/style property will take a function. This function recieves a parameter which will be true or false according to the active state. We can then use a Ternary Operator to either return our string/inline style or null. eg:
 
 ```js
 import { NavLink } from "react-router-dom";
