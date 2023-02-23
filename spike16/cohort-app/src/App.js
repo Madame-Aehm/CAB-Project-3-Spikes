@@ -9,6 +9,7 @@ import AboutDev from './pages/AboutDev';
 import AboutApp from './pages/AboutApp';
 import Character from './pages/Character';
 import { AuthContextProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           {/* <Route path='/' element={ <Home /> }/> */}
           <Route index element={ <Home /> } />
 
-          <Route path='character/:id' element={ <Character /> } />
+          <Route path='character/:id' element={ <ProtectedRoute><Character /></ProtectedRoute> } />
 
           <Route path='about' element={ <About /> }>
             {/* <Route index element={ <AboutDev /> } /> */}
