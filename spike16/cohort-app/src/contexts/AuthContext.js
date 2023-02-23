@@ -6,16 +6,13 @@ import { createContext } from "react";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
   function logIn() {
-    setIsLoggedIn(true);
     setUser(fakeUser);
   }
 
   function logOut() {
-    setIsLoggedIn(false);
     setUser(null);
   }
 
@@ -27,12 +24,11 @@ export const AuthContextProvider = (props) => {
 
   useEffect(() => {
     console.log("user: ", user);
-    console.log("isLoggedIn: ", isLoggedIn);
-  }, [user, isLoggedIn])
+  }, [user])
   
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, logIn, logOut }} >
+    <AuthContext.Provider value={{ user, logIn, logOut }} >
       { props.children }
     </AuthContext.Provider>
   )

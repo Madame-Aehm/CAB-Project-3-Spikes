@@ -6,7 +6,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 function Navbar() {
   const location = useLocation();
-  const { isLoggedIn, user, logIn, logOut } = useContext(AuthContext);
+  const { user, logIn, logOut } = useContext(AuthContext);
   
   return (
     <nav style={{ 
@@ -32,8 +32,8 @@ function Navbar() {
         }
       </div>
 
-      { !isLoggedIn && <p>You should <u onClick={logIn} style={{ cursor: "pointer" }}>log in!</u></p> }
-      { isLoggedIn && 
+      { !user && <p>You should <u onClick={logIn} style={{ cursor: "pointer" }}>log in!</u></p> }
+      { user && 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
         <p>Welcome back, {user.username}</p>
         <p onClick={logOut} style={{ cursor: "pointer", textDecoration: "underline" }}>Logout?</p>

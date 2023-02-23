@@ -40,46 +40,43 @@ export default App;
 
 - If I log something to the console to test whether my Context is connected, I should see it from any page.
 
-- We don't have any log in functionality yet, but we can still create some states and functions to imitate it, in preperation for when we will. On my AuthContext, I'm going to create a state for a user. How you initialize your initial user state is up to you, but you should be consistent across your functions when you start to create them. You could create two states: a **boolean** to hold the logged in status, and a user **object** which exists as either **null** or the user's details. 
-
-- Pass these variables into the Provider as values. eg:
+- We don't have any log in functionality yet, but we can still create some states and functions to imitate it, in preperation for when we will. On my AuthContext, I'm going to create a state for a user. How you initialize your initial user state is up to you, but you should be consistent across your functions when you start to create them. You can create a state to track a user **object**, which exists as either **null** or the user's details. Pass this variable into the Provider as a value. eg: 
 
 ```js
 export const AuthContextProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user }} >
+    <AuthContext.Provider value={{ user }} >
       { props.children }
     </AuthContext.Provider>
   )
 }
 ```
 
-- In order to now access these variables somewhere else in the App, we will use React's **useContext()** hook. On any component, import both the useContext hook from React, and the AuthContext from our own file. In the component, call the hook and save the return to a variable. Here, if you log it to the console, you'll see an object with each of your variables represented as properties. We can then **destructure** to access specifically the variables from the value that we want. eg:
+- In order to now access this variable somewhere else in the App, we will use React's **useContext()** hook. On any component, import both the useContext hook from React, and the AuthContext from our own file. In the component, call the hook and save the return to a variable. Here, if you log it to the console, you'll see an object with any Provider values represented as properties. We can then **destructure** to access specifically the variables from the value that we want. eg:
 
 ```js
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 ```
 
-- Now we can start doing some conditional rendering related to whether we have a user or not. Remember, at the moment the user and isLoggedIn values are set to show that we have no user. We could put some sign in the NavBar to indicate that a user is logged in or not. 
+- Now we can start doing some conditional rendering related to whether we have a user or not. Remember, at the moment the user and value is set to 'null'. We could put some sign in the NavBar to indicate that a user is logged in or not. 
 
-- We can take that a step further, and create an 'imitation' login function on the AuthContext. All it needs to do is to update the states of the isLoggedIn and user variables. We can create some fake account details to set as the user, and the isLoggedIn will be set to true. Now put that login function into the Provider value as well. We can now access it from anywhere! Let's log in from the NavBar. If you also want to logout, you'll just have to create a function that does the opposite.
+- We can take that a step further, and create an 'imitation' login function on the AuthContext. All it needs to do is to update the state of the user variable with some fake account details. Now put that login function into the Provider value so we can access it from anywhere! Let's log in from the NavBar. If you also want to logout, you'll just have to create a function that does the opposite.
 
 - Say I also want to set some private Routes on my App. For example, unless a user is logged in, they aren't allowed to view the selected character page. We can create a component to act as a **Protected Route**, which we will wrap around any component we wish to keep private from non-users. This component will recieve the special **children** props (the same as the context provider!). Destructuring it means you don't have to use props.children. 
 
-- We can access the isLoggedIn state from our AuthContext to determine whether a user is logged in. If they are, we will return the children from the props, this is returning all children components of my ProtectedRoute. If the isLoggedIn state determines that there _isn't_ a user, then we can either return something to communicate that they need to sign in to view the page, or we can use the useNavigate again to automatically redirect them to the login or home page. eg:
+- We will need to access the user state from the AuthContext to determine whether a user is an object with details, or null. If user isn't null, we will return the children from the props (this is returning all children components nested inside the tags of my ProtectedRoute). If the user state is 'null', then we can either return something to communicate that they need to sign in to view the page, or we can use the useNavigate again to automatically redirect them to the login or home page. eg:
 
 ```js
 import React, { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 
 function ProtectedRoute({ children }) {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
-    <>{ isLoggedIn ? children : <p>You need to log in to view this page</p> }</>
+    <>{ user ? children : <p>You need to log in to view this page</p> }</>
   )
 }
 
