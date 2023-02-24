@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import useFetch from '../hooks/useFetch';
 
 function Character() {
   // const params = useParams();
   const { id } = useParams();
-  const [character, setCharacter] = useState(null);
-  const [error, setError] = useState(null);
+  // const [character, setCharacter] = useState(null);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchCharacter();
-  }, [id])
+  // useEffect(() => {
+  //   fetchCharacter();
+  // }, [id])
+
+  const { result: character, error, loading } = useFetch(`https://rickandmortyapi.com/api/character/${id}`);
   
-  const fetchCharacter = async() => {
-    try {
-      const response = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
-      const result = await response.json();
-      console.log(result);
-      if (result.id) {
-        setCharacter(result);
-      } else {
-        setError(result)
-      }
-    } catch (e) {
-      setError(e);
-    }
-    
-  }
+  // const fetchCharacter = async() => {
+  //   try {
+  //     const response = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+  //     const result = await response.json();
+  //     console.log(result);
+  //     if (result.id) {
+  //       setCharacter(result);
+  //     } else {
+  //       setError(result)
+  //     }
+  //   } catch (e) {
+  //     setError(e);
+  //   }
+  // }
 
 
   return (
     <div>
+      {error && <p>Something went wrong...</p>}
+      {loading && <p>Loading...</p>}
       {character && 
         <>
           <h1>Selected Character: { character.name }</h1>

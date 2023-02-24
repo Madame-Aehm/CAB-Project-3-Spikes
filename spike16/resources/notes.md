@@ -85,3 +85,17 @@ export default ProtectedRoute
 
 - Now I just need to import this component into the App.js and wrap it around any route path component that I want to be protected! 
 
+## Custom Hooks
+
+- We've already been using Hooks written by React: useState, useEffect, useContext, etc. We can also write our own Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally adviced to name your Hook with 'use', so that you rememeber the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
+
+- Let's create a Hook to return our fetch results. Make a folder to hold all our custom Hooks, and then start a file called useFetch.js. This is going to do all our fetches for us, both the 'all' and the individual character endpoints, so we'll need to do a bit of conditional work to make it compatible with both results. Multiple states to hold all potential results, or a parameter to indicate which result is expected, are two potential ways. 
+
+- The Hook will recieve a URL as a parameter, this will be what it 'fetches'. The fetch function itself should be called in a useEffect, like usual. Set the URL in the dependency array of the useEffect. This ensures it will fire even if the Hook is called multiple times on the same page. The return of our Hook is going to be all the states we've collected. We can return an error, a loading state, and then any and all results from our fetch.
+
+- On the pages where we're going to replace the fetch functions with our Hook, save the return of the Hook (with the appropriate arguments!) into a variable and log it to the console. You'll see it's returning an object with your variables. We can use destructuring to create those variables on the page. If you want to rename a variable, you can put a colon after the variable to be renamed and define the new name. eg:
+
+```js
+  const { result: characters, error, loading } = useFetch("https://rickandmortyapi.com/api/character", "all");
+```
+
