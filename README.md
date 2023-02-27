@@ -12,4 +12,6 @@
 
 ## Spike 15 - Dynamic & Nested Routes
 
-## Spike 15 - React Context
+## Spike 16 - React Context + Custom Hooks
+
+## Spike 17 - Firebase Authentication
