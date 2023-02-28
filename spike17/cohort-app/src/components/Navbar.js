@@ -32,7 +32,7 @@ function Navbar() {
         }
       </div>
 
-      { !user && <p>You should <u onClick={logIn} style={{ cursor: "pointer" }}>log in!</u></p> }
+      { !user && <p>You should <Link to="login">Login!</Link></p> }
       { user && 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
         <p>Welcome back, {user.username}</p>

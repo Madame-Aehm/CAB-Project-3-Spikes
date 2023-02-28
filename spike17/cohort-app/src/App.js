@@ -10,8 +10,11 @@ import AboutApp from './pages/AboutApp';
 import Character from './pages/Character';
 import { AuthContextProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import { auth } from './config';
+import Login from './pages/Login';
 
 function App() {
+  console.log("auth: ", auth)
   return (
     <>
       <AuthContextProvider>
@@ -27,6 +30,8 @@ function App() {
             <Route path='dev' element={ <AboutDev /> } />
             <Route path='app' element={ <AboutApp /> } />
           </Route>
+
+          <Route path='login' element={ <Login /> } />
 
           <Route path='*' element={ <Error404 /> }/>
         </Routes>
