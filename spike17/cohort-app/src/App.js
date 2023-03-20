@@ -13,7 +13,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 
 function App() {
-  console.log("auth: ", auth)
   return (
     <>
       <AuthContextProvider>
