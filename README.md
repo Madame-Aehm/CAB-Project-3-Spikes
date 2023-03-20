@@ -15,3 +15,5 @@
 ## Spike 16 - React Context + Custom Hooks
 
 ## Spike 17 - Firebase Authentication
+
+## Spike 18 - Firebase Firestore (database)

@@ -4,24 +4,7 @@ import useFetch from '../hooks/useFetch';
 
 function Home() {
 
-  // const myFetch = useFetch("https://rickandmortyapi.com/api/character", "all");
-  // console.log(myFetch);
-
   const { result: characters, error, loading } = useFetch("https://rickandmortyapi.com/api/character", "all");
-
-
-  // const [characters, setcharacters] = useState([]);
-
-  // useEffect(() => {
-  //   getCharacters();
-  // }, [])
-
-  // const getCharacters = async() => {
-  //   const response = await fetch("https://rickandmortyapi.com/api/character");
-  //   const result = await response.json();
-  //   console.log(result);
-  //   setcharacters(result.results)
-  // }
   
   return (
     <div>

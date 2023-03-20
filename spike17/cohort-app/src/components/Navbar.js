@@ -6,7 +6,7 @@ import { AuthContext } from '../contexts/AuthContext';
 
 function Navbar() {
   const location = useLocation();
-  const { user, logIn, logOut } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   
   return (
     <nav style={{ 
@@ -21,8 +21,6 @@ function Navbar() {
       <div style={{ display: "flex", gap: "1em" }}>
         <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/"}>Home</NavLink>
         <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/about"}>About</NavLink>
-        {/* <Link to={"/"} className={ location.pathname === "/" ? "active" : null }>Home</Link>
-        <Link to={"/about"} className={ location.pathname.includes("about") ? "active" : null }>About</Link> */}
         { location.pathname.includes("about") && 
           <>
             - 
@@ -32,7 +30,7 @@ function Navbar() {
         }
       </div>
 
-      { !user && <p>You should <u onClick={logIn} style={{ cursor: "pointer" }}>log in!</u></p> }
+      { !user && <p>You should <Link to='login' >log in</Link></p> }
       { user && 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
         <p>Welcome back, {user.username}</p>
