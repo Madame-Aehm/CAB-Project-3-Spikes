@@ -3,10 +3,12 @@ import LoginForm from '../components/LoginForm';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebaseConfig'
 import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
 
-  const { logIn } = useContext(AuthContext);
+  const { logIn, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -17,6 +19,10 @@ function Login() {
     event.preventDefault();
     console.log("log in user now");
     logIn(loginEmail, loginPassword);
+    if (user) {
+      alert(user.email + ' has successfully logged in!');
+      navigate('/', { replace: true });
+    }
   }
 
   function submitRegister(event) {

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { auth } from '../firebaseConfig'
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 
 export const AuthContext = createContext();
 
@@ -25,7 +25,12 @@ export const AuthContextProvider = (props) => {
   }
 
   function logOut() {
-    setUser(null);
+    signOut(auth).then(() => {
+      alert('logged out');
+      setUser(null);
+    }).catch((error) => {
+      console.log("error:", error);
+    });
   }
 
   const fakeUser = {
@@ -34,9 +39,24 @@ export const AuthContextProvider = (props) => {
     password: "12345"
   }
 
+  function checkForUser() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+        console.log('logged in user: ', user);
+        setUser(user);
+      } else {
+        console.log("No user logged in");
+        setUser(null);
+      }
+    });
+  }
+
   useEffect(() => {
-    console.log("user: ", user);
-  }, [user])
+    checkForUser();
+    // console.log(auth.currentUser);
+    // setUser(auth.currentUser);
+  }, [])
   
 
   return (
