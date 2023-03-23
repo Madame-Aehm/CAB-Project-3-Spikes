@@ -6,7 +6,7 @@
 
 - We'll follow the steps in Firestore's [Get started](https://firebase.google.com/docs/firestore/quickstart) documentation. 
 
-- Start by clicking on **Create database**. We're going to be starting in **test mode**. You'll see in the code snippet, the test mode is set to expire after 3 months. It is possible to extend this indefinitely to keep your App functional, or you can establish security rules once you have your App deployed with a domain.
+- Start by clicking on **Create database**. We're going to be starting in **test mode**. You'll see in the code snippet, the test mode is set to expire after 3 months. It is possible to extend this indefinitely to keep your App functional, or you can establish security rules.
 
 - The location determines which servers your data will be stored on. It's best to choose the location closest so where you are - so I'll select **eur3 (Europe)** then 'enable'. Firebase will create my database, and I should be redirected to the overview. Under the submenu **Rules**, you can update the code snippet to extend the duration of the test mode period. 
 
@@ -24,16 +24,22 @@
 
 - I'll need a state to hold the value of my **&lt;textarea&gt;**, which will need to have an **onChange** event set to a **handleChange** function, which sets the state to the target value. I'll also need a **handleSubmit** function. Log the state variable linked to the **&lt;textarea&gt;** value to test they're all connected.
 
-- Now I want to create a **JavaScript Object** to be submitted as my document. The properties I want to include are the **author** of the comment (this will be the current user, just their **uid** will be enough to identify them), a **date** (the current date and time), and the **text** of the comment (the value of the text input). Log this object to the console to check what it looks like.
+- Now I want to create a **JavaScript Object** to be submitted as my document. The properties I want to include are the **author** of the comment (this will be the current user, just their email will be enough to identify them), a **date** (a current date instance, I'm going to use **Date.now()** to make sorting my data by date/time nice and simple), and the **text** of the comment (the value of the text input). Log this object to the console to check what it looks like.
 
 - Now that I'm satisfied with how my document is structured, I will add it to the database! The **setDoc()** method allows you to assign your document an ID, or name. Since I don't have any reason to do that and I'm happy to let Firestore assign it a unique ID on my behalf, I will use the **addDoc()** method. 
 
 - My **addDoc()** method will take two arguments: a callback function called **collection()** (which will also need to be imported from 'firebase/firestore'), and the document to be added (my object variable). The **collection()** method in turn takes a minimum of two arguments: the **db** variable from our firebaseConfig.js file will always be the first. The next is the name of the collection we are adding our document to. If a collection by this name exists, the document will be added. If no collection by this name exists, a new one will be automatically created! 
 
-- Add this function to the **handleSubmit** (I'll need to make it asynchronous). If we've set it all up correctly, we should have something logged to the console. We can now check our database - it will need to be refreshed to see the changes. We should have our first comment! 
+- Adding more arguments to this function is how you will access sub-collections: the name of the parent document, then the name of the sub-collection have to be added in pairs. This logic applies the same for **setDoc()**, but the function will only accept an odd number of arguments since the new document must also be assigned an ID.
 
+- Add this function to the **handleSubmit** (I'll need to make it asynchronous). If we've set it all up correctly, we should have something logged to the console. We can now check our database - it might need to be refreshed to see the changes. We should have our first comment! 
 
+- Here I would also recommend adding some UI elements to communicate to the user when their comment has been successfully posted, such as an alert, and clearing the form.
 
+- Now that we have some comments in our database, we can write a function to [get](https://firebase.google.com/docs/firestore/query-data/get-data) and display them. I'm going to follow the steps in the documentation to **get all documents in a collection**. Documents are sorted by default by the document ID. You can specify how to [sort your data](https://firebase.google.com/docs/firestore/query-data/order-limit-data) by using **orderBy()** in the query, so I'm going to sort them by date. I would want this function to fire when the page loads so my user can view all the old comments before they add their own, so I'll write the function and call it in a useEffect. 
 
+- You'll notice the sample code is using a **forEach()** to iterate over the query result. I'm going to create a new array, and push what I want of each document into it. I can then set this to a state for my comments. Now I've got an array of comments that I can display! To mimic a real-time update, you can add some extra functionality to your **handleSubmit()** to update the state of your comments variable to include the one just posted.
 
-- Adding more arguments to this function is how you will access sub-collections: the name of the parent document, then the name of the sub-collection will come next. 
+- Any formatting I'd like to do can be done through functions, such as displaying only the first part of the user email, or formatting the date. If you think it's likely you might want to use these functions again somewhere in your App, you can create a folder for **utils**, and export them from a file there. 
+
+- Firestore _can_ also get [real-time updates](https://firebase.google.com/docs/firestore/query-data/listen) by setting up a 'listener' on a document. I'm going to make two new functions to compare the functionality - a new submit function, and a new getComments function. The submit function will be very much the same - I'll just remove the steps to manually update the comments state. My get function will also look very similar, but the whole thing will be wrapped in an **onSnapshot()**. The 'unsubscribe' returned from this function can be called to **detach** the listener. 

@@ -10,6 +10,8 @@
 
 - Once your package has installed, create a file called **firebaseConfig.js** in the project **src** folder. Then copy and paste the initialization code from the overview into that file. To test whether this has worked, you can export the **app** variable, import it into another component, and log it to the console.
 
+- Firebase API keys are _not_ used to control access to backend resources. Usually, you need to fastidiously guard API keys, however API keys for Firebase services are ok to include in code or checked-in config files. If you use password-based Firebase Authentication and someone gets hold of your API key, they will _not_ be able to access any of your Firebase project's database or Cloud Storage data as long as this data is protected by [Firebase Security Rules](https://firebase.google.com/docs/rules). They could, however, use your API key to access Firebase's authentication endpoints and make authentication requests against your project. If you already have an .env file for your project, you can put your Firebase API key there, but it's not necessary.
+
 ## Firebase Authentication
 
 - Now that Firebase is working through our App, we can choose some Firebase products to add. We're going to start with **Authentication**. This will create a database on Firebase of users, Google will do all the work authenticating credentials and keeping data secure and organised. We can just use their pre-written functions to create, update, and delete users from the App.
