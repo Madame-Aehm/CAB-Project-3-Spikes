@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
+  const [userChecked, setUserChecked] = useState(false);
 
   function logIn(email, password) {
     // setUser(fakeUser);
@@ -45,9 +46,11 @@ export const AuthContextProvider = (props) => {
         const uid = user.uid;
         console.log('logged in user: ', user);
         setUser(user);
+        setUserChecked(true);
       } else {
         console.log("No user logged in");
         setUser(null);
+        setUserChecked(true);
       }
     });
   }
@@ -60,7 +63,7 @@ export const AuthContextProvider = (props) => {
   
 
   return (
-    <AuthContext.Provider value={{ user, logIn, logOut }} >
+    <AuthContext.Provider value={{ user, logIn, logOut, userChecked }} >
       { props.children }
     </AuthContext.Provider>
   )

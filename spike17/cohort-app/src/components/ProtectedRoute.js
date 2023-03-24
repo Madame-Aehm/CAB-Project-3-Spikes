@@ -1,11 +1,14 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
+import { Navigate } from 'react-router-dom'
 
 function ProtectedRoute({ children }) {
-  const { user } = useContext(AuthContext); //make custom hook!
+  const { user, userChecked } = useContext(AuthContext); 
 
   return (
-    <>{ user ? children : <p>You need to log in to view this page</p> }</>
+    <>
+      { userChecked && user ? children : userChecked && !user ? <Navigate to={'/login'} replace={true} /> : <p>Loading...</p> }
+    </>
   )
 }
 
