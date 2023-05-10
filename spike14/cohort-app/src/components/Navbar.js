@@ -12,15 +12,18 @@ function Navbar() {
       padding: "0 1em",
       gap: "1em" }}>
       
-      {/* <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/"}>Home</NavLink>
-      <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/about"}>About</NavLink> */}
-      <Link to={"/"} className={ location.pathname === "/" ? "active" : null }>Home</Link>
-      <Link to={"/about"} state={"this is a state message"} className={ location.pathname.includes("about") ? "active" : null }>About</Link>
+      <NavLink className={(params) => {
+        console.log(params)
+        return params.isActive ? "active" : null
+      }} to={"/"}>Home</NavLink>
+      <NavLink className={({ isActive }) => isActive ? "active" : null} to={"/about"}>About</NavLink>
+      {/* <Link to={"/"} className={ location.pathname === "/" ? "active" : null }>Home</Link>
+      <Link to={"/about"} state={"this is a state message"} className={ location.pathname.includes("about") ? "active" : null }>About</Link> */}
       { location.pathname.includes("about") && 
         <>
           - 
-          <Link to={"/about/dev"}>About Dev</Link>
-          <Link to={"/about/app"}>About App</Link>
+          <Link to={"/dev"}>About Dev</Link>
+          <Link to={"/app"}>About App</Link>
         </> 
       }
     </nav>

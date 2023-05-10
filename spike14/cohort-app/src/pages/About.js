@@ -5,12 +5,17 @@ function About() {
   const location = useLocation();
   console.log(location);
   return (
+    // <div>
+    //   { location.pathname.includes("dev") || location.pathname.includes("app") ? <Outlet /> : 
+    //   <>
+    //     <h1>About</h1>
+    //     <p>This app will show characters from Rick and Morty</p>
+    //   </> }
+    // </div>
     <div>
-      { location.pathname.includes("dev") || location.pathname.includes("app") ? <Outlet /> : 
-      <>
-        <h1>About</h1>
-        <p>This app will show characters from Rick and Morty</p>
-      </> }
+      <Outlet />
+      <h1>About</h1>
+      <p>This app will show characters from Rick and Morty</p>
     </div>
   )
 }
