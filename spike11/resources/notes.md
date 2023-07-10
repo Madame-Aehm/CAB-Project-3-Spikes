@@ -52,6 +52,10 @@ In React, you will typically have one Component per file. This is so you can def
 
 I can now import both as `{ App, App2 }` on `main.jsx` and display both. Alternatively, I can call the `<App2 />` from inside my App Component, and return the export/import to the original state. App2 is now nested inside App. I really recommend having a play with Components and using the Inspector to look at where the elements are rendering.
 
+### Strict Mode
+
+Wrapped around your `<App />` Component on the `main.jsx` is a Component called `<React.StrictMode>`. This is a [debugging tool](https://react.dev/reference/react/StrictMode). It will re-render each Component and re-run Effects an extra time in order to find common bugs caused by impure rendering or missing Effect cleanup (we will cover Effects in the next spike). This only happens in **development mode** - when you build and deploy your app, this behaviour will stop. You will notice this mostly as double console logs. Even though this can be a bit annoying, I recommend leaving it active. 
+
 ### Conditional Rendering
 
 JSX let's you write **inline JavaScript** mixed in with your HTML. The syntax uses **curly braces** **{}** to escape into JavaScript at any point in your HTML. This is useful for defining [**conditional rendering**](https://react.dev/learn/conditional-rendering) - if one condition is true, show this element, else show other element. 
