@@ -1,10 +1,10 @@
 # Project 3
 
-## Spike 11 - React Intro
+## Spike 11 - React Intro p1
 
-## Spike 12 - React Advanced
+## Spike 12 - React Intro p2
 
-## Spike 13 - Styled/Class Components
+## Spike 13 - Styling in React
 
 ## Present Rick & Morty App
 

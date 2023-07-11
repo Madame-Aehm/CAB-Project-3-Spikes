@@ -1,12 +1,16 @@
 /* eslint-disable react/prop-types */
 import './App.css'
+import styles from './styles/app.module.css';
+import './styles/test.css'
+
 // import App2 from './App2'
 
 function App(props) {
+  console.log("styles", styles);
   const variable = "this is a variable that I want to pass down";
   return (
     <div>
-      <h1>This is app 1</h1>
+      <h1 className='testing'>This is app 1</h1>
       <div>{props.children}</div>
       {/* <App2 prop1={"this is my first prop"}>This is where the children go</App2> */}
       <App2 prop1={"This is my first prop"} variable={variable}>Here are the children</App2>
