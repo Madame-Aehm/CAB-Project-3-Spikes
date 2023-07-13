@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 // import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthContextProvider } from './context/AuthContext.tsx'
 import Homepage from './pages/Homepage.tsx'
-import NewPage from './pages/NewPage.tsx'
-import { AuthContext } from './context/AuthContext.ts'
+import Characters from './pages/Characters.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
+import Nav from './components/Nav.tsx'
+
 
 // const router = createBrowserRouter([
 //   {
 //     path: "/",
-//     element: <AuthContext.Provider value={{ user: false }}><Homepage /></AuthContext.Provider>
+//     element: <Homepage />
 //   },
 //   {
 //     path: "/new-page",
@@ -20,14 +23,16 @@ import { AuthContext } from './context/AuthContext.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthContext.Provider value={{ user: false }}>
+    <AuthContextProvider>
       <BrowserRouter>
+      <Nav />
         <Routes>
           <Route path='/' element={ <Homepage /> } />
-          <Route path='/new-page' element={ <NewPage /> } />
+          <Route path='/characters' element={ <ProtectedRoute><Characters /></ProtectedRoute> } />
         </Routes>
       </BrowserRouter>
-    </AuthContext.Provider>
       {/* <RouterProvider router={router} /> */}
+    </AuthContextProvider>
+      
   </React.StrictMode>,
 )

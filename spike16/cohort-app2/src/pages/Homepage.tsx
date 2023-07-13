@@ -1,11 +1,11 @@
-import { useContext } from 'react'
-import { AuthContext } from '../context/AuthContext'
+// import { useContext } from 'react'
+// import { AuthContext } from '../context/AuthContext'
 
 // type Props = {}
 
 const Homepage = () => {
-  const auth = useContext(AuthContext);
-  console.log(auth)
+  // const auth = useContext(AuthContext);
+  // console.log(auth)
   return (
     <h1>Homepage</h1>
   )
