@@ -133,7 +133,35 @@ We've already been using **Hooks** written by React: `useState`, `useEffect`, `u
 Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevent `useState` variables (data, loading, error).
 
 ```ts
+const useFetch = (url: string) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<null | string>(null);
+  const [data, setData] = useState<RickAndMorty>();
 
+  useEffect(() => {
+    const fetchData = async() => {
+      try {
+        const response = await fetch(url);
+        const result = await response.json();
+        setData(result);
+      } catch (e) {
+        console.log(e);
+        setError(e.message)
+      }
+    }
+
+    fetchData()
+    .catch((e) => {
+      console.log(e)
+      setError(e.message)
+    })
+    .finally(() => setLoading(false))
+  }, [url]);
+
+  return { data, error, loading }
+}
+
+export default useFetch
 ```
 
 
