@@ -4,7 +4,38 @@
 
 ### Nested Routes
 
-- We've seen how to build some flat routes, but it's also possible to nest routes inside each other. Let's use our About page as an example, and create one sub-route for 'about the app developer', and one for 'about the app content'. So far, we've been self-closing our **&lt;Route&gt;** components. If we create seperate opening and closing tags for our About route, we can then nest sub-routes inside. You can even create a sub-index, and a sub-404 within the parent **&lt;Route&gt;**. eg:
+We've seen how to build some flat routes, but it's also possible to nest routes inside each other. Each route object in our BrowserRouter array can also accept a property `children`, which will be another array of routes! As an example, let's create an `<About />` component to be rendered at `"/about"`. I have two themes I want to cover in my about section: about the company, and about the developer, so I would like to show different components at `"/about/dev"` and `"/about/company"`. 
+
+I'll need components for all of them. Here you have to decide how you want your navigation to be structured. Do you want there to be 3 pages, or only 2? Add a new path with children to the routes tree.
+
+```ts
+  {
+    path: "/about",
+    element: <About />,
+    children: [
+      {
+        path: "developer",
+        element: <AboutDev />
+      },
+      {
+        path: "company",
+        element: <AboutCompany />
+      }
+    ]
+  }
+```
+
+Notice we omit the **/** for the nested routes. A **/** symbol creates an **absolute** route. If you were to use an absolute route, you would need to specify the full path, like `"/about/developer"`. Be very careful about typos if you choose to define nested routes this way! 
+
+If we visit the nested routes, however, we're still only seeing the main route. 
+
+
+
+
+
+
+
+ Let's use our Characters page as an example, and create a nested route for single character by ID.
 
 ```js
 import { Routes, Route } from "react-router-dom";

@@ -41,7 +41,7 @@ Now that we've defined a Router, we can assign it a **provider**. Import `Router
 )
 ```
 
-You can create as many routes as you need for each page you would like to have, so let's build a navigation bar. This will also be slightly different to your static projects, because in React an  `<a>` element causes a hard refresh on the page. We don't want that - it defeats the purpose of React's state management system! Luckily, React Router gives us some options. Let's create a folder in the `src` to hold our `components`, and create a file called `Navbar.tsx`. There are ways of using Layout components to do this more efficiently, but for this demo I'm just going to manually import the `<Navbar />` into each page.
+You can create as many routes as you need for each page you would like to have, so let's build a navigation bar. This will also be slightly different to your static projects, because in React an  `<a>` element causes a hard refresh on the page. We don't want that - it defeats the purpose of React's state management system! Luckily, React Router gives us some options. Let's create a folder in the `src` to hold our `components`, and create a file called `Navbar.tsx`. There are ways of Layouts to do this more efficiently, but for now I'm just going to manually import the `<Navbar />` into each page I want it to be displayed.
 
 ```tsx
 function NavBar() {

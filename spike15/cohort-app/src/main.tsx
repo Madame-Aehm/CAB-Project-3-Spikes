@@ -5,6 +5,9 @@ import './index.css'
 import Error404 from './pages/Error404'
 import Homepage from './pages/Homepage'
 import Characters from './pages/Characters'
+import About from './pages/About'
+import AboutDev from './pages/AboutDev'
+import AboutCompany from './pages/AboutCompany'
 
 const router = createBrowserRouter([
   {
@@ -12,12 +15,26 @@ const router = createBrowserRouter([
     element: <Homepage />
   },
   {
+    path: "*",
+    element: <Error404 />
+  },
+  {
     path: "/characters",
     element: <Characters />
   },
   {
-    path: "*",
-    element: <Error404 />
+    path: "/about",
+    element: <About />,
+    children: [
+      {
+        path: "developer",
+        element: <AboutDev />
+      },
+      {
+        path: "company",
+        element: <AboutCompany />
+      }
+    ]
   }
 ])
 
