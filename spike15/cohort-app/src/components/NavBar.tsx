@@ -1,23 +1,15 @@
 // type Props = {}
 import { Link, NavLink, useLocation } from "react-router-dom"
+import { navContainerStyles } from "../styles/navbar"
 
 function NavBar() {
-  const navContainerStyles = { 
-    width: "100%", 
-    height: "50px", 
-    border: "solid 1px black", 
-    display: "flex", 
-    gap: "1em", 
-    alignItems: "center", 
-    padding: "0 1em" 
-  }
 
   const activeLink = {
     color: "red",
     fontWeight: "bold"
   }
 
-  const path = useLocation().pathname;
+  // const path = useLocation().pathname;
 
   return (
     <nav style={navContainerStyles}>

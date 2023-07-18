@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
 import Error404 from './pages/Error404'
 import Homepage from './pages/Homepage'
@@ -8,34 +8,54 @@ import Characters from './pages/Characters'
 import About from './pages/About'
 import AboutDev from './pages/AboutDev'
 import AboutCompany from './pages/AboutCompany'
+import WithNav from './components/layouts/WithNav'
+import Character from './pages/Character'
+import ErrorElement from './components/ErrorElement'
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Homepage />
+    element: <WithNav><Outlet /></WithNav>,
+    children: [
+      {
+        path: "/",
+        element: <Homepage />
+      },
+      {
+        path: "/characters",
+        element: <Characters />,
+        loader:async () => {
+          return fetch("https://rickandmortyapi.com/api/character");
+        },
+        errorElement: <ErrorElement />
+      },
+      {
+        path: "/characters/:id",
+        element: <Character />,
+        loader:async ({ params }) => {
+          return fetch(`https://rickandmortyapi.com/api/character/${params.id!}`);
+        },
+        errorElement: <ErrorElement />
+      },
+      {
+        path: "/about",
+        element: <About />,
+        children: [
+          {
+            path: "developer",
+            element: <AboutDev />
+          },
+          {
+            path: "company",
+            element: <AboutCompany />
+          }
+        ]
+      }
+    ]
   },
   {
     path: "*",
     element: <Error404 />
   },
-  {
-    path: "/characters",
-    element: <Characters />
-  },
-  {
-    path: "/about",
-    element: <About />,
-    children: [
-      {
-        path: "developer",
-        element: <AboutDev />
-      },
-      {
-        path: "company",
-        element: <AboutCompany />
-      }
-    ]
-  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
