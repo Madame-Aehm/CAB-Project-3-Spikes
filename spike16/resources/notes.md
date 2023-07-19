@@ -48,7 +48,7 @@ We now have a very simple Context. Let's test it first without creating a Provid
 const contextValues = useContext(AuthContext);
 ```
 
-The Provider exists as a property on my Context, so from the `main.tsx`, I can wrap this `AuthContext.Provider` Component around whichever Components or Routes that I want to share the values. In our case, all of them! This is where I then define the true value of my `value` - I can set my user to `false`. The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. 
+The Provider exists as a property on my Context, so from the `main.tsx`, I can wrap this `AuthContext.Provider` Component around whichever Components or Routes that I want to share the values. In our case, all of them! This is where I then define the true value of my `value` - I can set my user to `false`. 
 
 ```tsx
 <AuthContext.Provider value={{ user: false }}>
@@ -56,7 +56,7 @@ The Provider exists as a property on my Context, so from the `main.tsx`, I can w
 </AuthContext.Provider>
 ```
 
-So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers seperate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
+The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers seperate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
 
 ```ts
 type Props = {
@@ -244,7 +244,7 @@ export default function useFetch <Placeholder> (url: string): ReturnData<Placeho
 
 Now that our Hook is ready, it's time to use it! It returns a single object with the properties, but we can destructure to use those variables directly. Be aware that we've returned an object with properties `data`, `error`, and `loading`. This means we are not restricted to the correct order, but we do have to use the right name! If you want to use the the same Hook multiple times on the same page, then you'll need rename those variables as they come in.
 
-We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses.
+We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses. You've probably already been doing this when you need to strictly type a `useState()` variable!
 
 ```ts
   const { data: charactersArray, loading: arrayLoading, error: arrayError } = useFetch<RickMorty>("https://rickandmortyapi.com/api/character");
