@@ -192,7 +192,7 @@ interface NotOk {
 }
 ```
 
-The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). You've probably already been doing this when you need to strictly type a `useState()` variable! I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
+The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
 
 ```tsx
 // export const useFetch = <Placeholder,> (url: string): ReturnData<Placeholder> => {   // arrow function syntax is a little different
@@ -237,7 +237,7 @@ export default function useFetch <Placeholder> (url: string): ReturnData<Placeho
 
 Now that our Hook is ready, it's time to use it! It returns a single object with the properties, but we can destructure to use those variables directly. Be aware that we've returned an object with properties `data`, `error`, and `loading`. This means we are not restricted to the correct order, but we do have to use the right name! If you want to use the the same Hook multiple times on the same page, then you'll need rename those variables as they come in.
 
-We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses.
+We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses. You've probably already been doing this when you need to strictly type a `useState()` variable!
 
 ```ts
   const { data: charactersArray, loading: arrayLoading, error: arrayError } = useFetch<RickMorty>("https://rickandmortyapi.com/api/character");
