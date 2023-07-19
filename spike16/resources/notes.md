@@ -142,24 +142,25 @@ We've already been using **Hooks** written by React: `useState`, `useEffect`, `u
 
 Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevent `useState` variables (data, loading, error).
 
-```ts
-const useFetch = (url: string) => {
+```jsx
+const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<RickAndMorty | null>(null);
+  const [error, setError] = useState("");
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async() => {
+      setLoading(true);
+      setError("");
       try {
         const response = await fetch(url);
         const result = await response.json();
-        setData(result);
+        response.ok ? setData(result) : setError(result.error);
       } catch (e) {
         console.log(e);
         setError(e.message)
       }
     }
-
     fetchData()
     .catch((e) => {
       console.log(e)
@@ -174,11 +175,17 @@ const useFetch = (url: string) => {
 export default useFetch
 ```
 
-This works if your fetches return the same type of data every time. But what if we could be recieving either an array of many characters, or an object for a single character? Custom Hooks with [typescript](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi) can seem tricky. This is a good place to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
+To use the Hook, I import it and call it like a function. The return can be destructured to create 3 variables, instead of 1 object with 3 properties.
 
-In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. You will often see it represented with `<T>`, but I want to make it really clear where we're using it. Think of this as like parameters when you write a function. When we actually _use_ the type, we'll have to feed it the type we want to be used in place of the generic placeholder. We'll know what type we expect the Hook to return based on which URL endpoint we're using.
+```jsx
+const { data, error, loading } = useFetch("....whateverUrl");
+```
 
-I've created two interfaces for this Hook: one represents the return of the function, so the `data`, `loading` state, and `error` message. The data will also need to be typed using generics. The second interface is what I know my API returns when something goes wrong. The catch block doesn't catch the error returned from the API, since that still counts as a successful response, so we have to handle this manually. 
+Custom Hooks with [typescript](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi), however, can be tricky. We want them to be flexible, but that means having flexible types. Each URL will return something completely different: an array of many characters, or an object for a single character, etc. This is a good place to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
+
+In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. You will often see it represented with `<T>`, but I want to make it really clear where we're using it. Think of this as like parameters when you write a function. When we actually _use_ the type, we'll have to feed it the actual type we want to be used in place of the generic placeholder. We'll know what type we expect the Hook to return based on which URL endpoint we're using.
+
+I've created two interfaces for this Hook: one represents the return of the function, so the `data`, `loading` state, and `error` message. This is so that when you call it in your component, those variables will already be strictly typed. The data variable will need to be typed using generics. The second interface is what I know my API returns when something goes wrong. The catch block doesn't catch the error returned from the API, since that still counts as a successful response, so we have to handle this manually. 
 
 ```tsx
 interface ReturnData<Placeholder> {
@@ -192,7 +199,7 @@ interface NotOk {
 }
 ```
 
-The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
+The syntax to _recieve_ a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
 
 ```tsx
 // export const useFetch = <Placeholder,> (url: string): ReturnData<Placeholder> => {   // arrow function syntax is a little different
