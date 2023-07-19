@@ -18,7 +18,7 @@ The first step is to declare and export a variable using React's `createContext(
   export const AuthContext = createContext();
 ```
 
-Immediately we come across a [Typescript](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/) error that tells us we need a **default value** for our Context. This is what will be returned if you try to use your Context outside of it's **Provider**. The best approach is to create a full object variable to represent the "empty" value keys of your Context, and then a Type Interface for this object. Alternatively, you can use this default object to communicate to your user or yourself that somehow you're trying to use your Context outside it's Provider. 
+Immediately we come across a [Typescript](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/) error that tells us we need a **default value** for our Context. This is what will be returned if you try to use your Context outside of it's **Provider**. The best approach is to create a full object variable to represent the "empty" value keys of your Context, and then a Type Interface for this object. Alternatively, you can use this default object to communicate to your user or yourself that somehow you're trying to use your Context outside its Provider. 
 
 So far, the only thing I know my Context will hold will be a user object, but since I haven't even created that yet, I'm just going to say my user is a `boolean` - they're either logged in, or logged out (I will update this later!). In a folder called `@types`, create a file `index.d.ts` to hold all Types and Interfaces that you're likely to re-use across the App. 
 
@@ -44,9 +44,19 @@ export const AuthContext = createContext(defaultValue);
 
 We now have a very simple Context. Let's test it first without creating a Provider. To access anything on your Context, you need to use the `useContext()` hook, and pass it the Context variable you exported. If I do this in any Component and log it to the console, I should see my default object values.
 
+```tsx
+const contextValues = useContext(AuthContext);
+```
+
 The Provider exists as a property on my Context, so from the `main.tsx`, I can wrap this `AuthContext.Provider` Component around whichever Components or Routes that I want to share the values. In our case, all of them! This is where I then define the true value of my `value` - I can set my user to `false`. The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. 
 
-So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers seperate. I'm going to call this function `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, but I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
+```tsx
+<AuthContext.Provider value={{ user: false }}>
+  <RouterProvider router={router} />
+</AuthContext.Provider>
+```
+
+So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers seperate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
 
 ```ts
 type Props = {
@@ -73,7 +83,7 @@ Now, whenever we use the `useContext()` hook and pass it our `AuthContext`, we w
 
 Now we can start doing some conditional rendering related to whether we have a user or not. Remember, at the moment the user is set to `false`. We could put some sign in the NavBar to indicate that a user is logged in or not.
 
-We can take that a step further, and create an 'imitation' login function on the AuthContext. All it needs to do is to update the state of the user variable with some fake account details. Now put that login function into the Provider value so we can access it from anywhere! Let's log in from the NavBar. If you also want to logout, you'll just have to create a function that does the opposite.
+We can take that a step further, and create an 'imitation' login function on the AuthContext. All it needs to do is to update the state of the user variable. You could even write a function that takes input data and creates a dummy user! I'm just going to set my user to `true`. If you also want to logout, you'll just have to create a function that does the opposite.
 
 ```ts
 const login = () => {
@@ -85,7 +95,7 @@ const logout = () => {
 }
 ```
 
-Now we want to pass this through our Context Provider, but if we add them to the `value`, Typescript complains. It's tedious, but anytime we want to update what our Context shares, we also need to update the default value, and the Context Type.
+ Now put those functions into the Provider value so we can access them from anywhere! But if we add them to the `value`, Typescript complains. It's tedious, but anytime we want to update our Context value, we also need to update the default value, and the Context Type that defines that default value.
 
 ```ts
 interface AuthContextType {
@@ -101,7 +111,7 @@ const defaultValue: AuthContextType = {
 }
 ```
 
-A void function is a function that doesn't **return** anything. For the default value, I've had them throw an error that simply communicates there is no provider. If I were to forget my Provider, this error message will remind me to implement it.
+A void function is a function that doesn't **return** anything. For the default value, I've had them throw an error that simply communicates there is no provider. If I were to forget my Provider, this error message will remind me to implement it. If your functions take parameters, remember to also include and type them in the interface. 
 
 ## Protected Route
 
@@ -124,7 +134,7 @@ function ProtectedRoute({ children }) {
 export default ProtectedRoute
 ```
 
-Now I just need to import this component into the `main.tsx` and wrap it around any route path component that I want to be protected! 
+Now I just need to import this component into the `main.tsx` and wrap it around any route path component that I want to be protected! If you're using one of the new React Router Data APIs, you can create a layout Route for all protected routes. 
 
 ## Custom Hooks
 
@@ -136,7 +146,7 @@ Custom Hooks are great to prevent duplicating logic, but they can be overkill fo
 const useFetch = (url: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-  const [data, setData] = useState<RickAndMorty>();
+  const [data, setData] = useState<RickAndMorty | null>(null);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -164,105 +174,77 @@ const useFetch = (url: string) => {
 export default useFetch
 ```
 
+This works if your fetches return the same type of data every time. But what if we could be recieving either an array of many characters, or an object for a single character? Custom Hooks with [typescript](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi) can seem tricky. This is a good place to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
 
+In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. You will often see it represented with `<T>`, but I want to make it really clear where we're using it. Think of this as like parameters when you write a function. When we actually _use_ the type, we'll have to feed it the type we want to be used in place of the generic placeholder. We'll know what type we expect the Hook to return based on which URL endpoint we're using.
 
+I've created two interfaces for this Hook: one represents the return of the function, so the `data`, `loading` state, and `error` message. The data will also need to be typed using generics. The second interface is what I know my API returns when something goes wrong. The catch block doesn't catch the error returned from the API, since that still counts as a successful response, so we have to handle this manually. 
 
-
-
-
-
-
-
-
-
-
-## React Custom Hooks with Typescript
-
-- The same way we wrote a custom hook to fetch for our previous project, it's not a bad practise to do it again here. [Here](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi) is a page with a nicely explained example. We're going to try to do the same thing, but I also want to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
-
-- In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. We use it to strictly type the data variable we will be returning:
-
-```ts
+```tsx
 interface ReturnData<Placeholder> {
-  isLoading: boolean;
+  loading: boolean;
   data: Placeholder | null;
   error: null | string;
 }
-```
 
-- In the Hook itself, it will recieve the Type like props. We can now use it wherever we need it! It could be used to strictly type the parameters or the return, and can also be reached inside the function to be applied to any relevant variables:
-
-```ts
 interface NotOk {
   error: string
 }
+```
 
-export function useGet<Placeholder>(url: string): ReturnData<Placeholder> {
-  const [isLoading, setIsLoading] = useState(true);
+The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
+
+```tsx
+// export const useFetch = <Placeholder,> (url: string): ReturnData<Placeholder> => {   // arrow function syntax is a little different
+export default function useFetch <Placeholder> (url: string): ReturnData<Placeholder> {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [data, setData] = useState<Placeholder | null>(null);
-  const [error, setError] = useState<null | string>(null);
 
-  const get = async () => {
-    setError(null);
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        setData(data);
-      } else {
-        const { error } = await response.json() as NotOk;
-        setData(null);
-        setError(error.error);
-      }
-    } catch (error) {
-      const { message } = error as Error;
-      setError(message);
-      setData(null)
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const handleError = (e: Error) => {
+    console.log(e);
+    setError(e.message);
+  }
+  
   useEffect(() => {
-    url && get();
+    const fetchData = async() => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const result = await response.json() as Placeholder;
+          setData(result);
+        } else {
+          const result = await response.json() as NotOk;
+          setError(result.error);
+        }
+      } catch (e) {
+        handleError(e as Error)
+      }
+    }
+
+    fetchData()
+      .catch((e) => {
+        handleError(e as Error)
+      })
+      .finally(() => setLoading(false))
   }, [url]);
 
-  return { isLoading, data, error };
+  return { data, error, loading }
 }
 ```
 
-- When we call the function, we just have to be sure to include the Type we wish to pass:
+Now that our Hook is ready, it's time to use it! It returns a single object with the properties, but we can destructure to use those variables directly. Be aware that we've returned an object with properties `data`, `error`, and `loading`. This means we are not restricted to the correct order, but we do have to use the right name! If you want to use the the same Hook multiple times on the same page, then you'll need rename those variables as they come in.
+
+We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses.
 
 ```ts
-// I created a type for each response for the catfacts api
-interface CatFactType {
-  fact: string;
-  length?: number;
-}
-interface CatFactsArray {
-  data: CatFactType[];
-}
-const { data, isLoading, error } = useGet<CatFactType>("https://catfact.ninja/fact");
-const { data: factsArray, isLoading: factsLoading, error: factsError } = useGet<CatFactsArray>("https://catfact.ninja/facts");
+  const { data: charactersArray, loading: arrayLoading, error: arrayError } = useFetch<RickMorty>("https://rickandmortyapi.com/api/character");
+  console.log("charactersArray", charactersArray);
+
+  const { data: singleCharacter, loading: singleLoading, error: singleError } = useFetch<Character>("https://rickandmortyapi.com/api/character/1");
+  console.log("singleCharacter", singleCharacter);
 ```
 
-
-
-
-
-
-
-
-
-
-
-- Let's create a Hook to return our fetch results. Make a folder to hold all our custom Hooks, and then start a file called useFetch.js. This is going to do all our fetches for us, both the 'all' and the individual character endpoints, so we'll need to do a bit of conditional work to make it compatible with both results. Multiple states to hold all potential results, or a parameter to indicate which result is expected, are two potential ways. 
-
-- The Hook will recieve a URL as a parameter, this will be what it 'fetches'. The fetch function itself should be called in a useEffect, like usual. Set the URL in the dependency array of the useEffect. This ensures it will fire even if the Hook is called multiple times on the same page. The return of our Hook is going to be all the states we've collected. We can return an error, a loading state, and then any and all results from our fetch.
-
-- On the pages where we're going to replace the fetch functions with our Hook, save the return of the Hook (with the appropriate arguments!) into a variable and log it to the console. You'll see it's returning an object with your variables. We can use destructuring to create those variables on the page. If you want to rename a variable, you can put a colon after the variable to be renamed and define the new name. eg:
-
-```js
-  const { result: characters, error, loading } = useFetch("https://rickandmortyapi.com/api/character", "all");
-```
-
+Feel free to play around with the return value. If an object doesn't suit your needs, you could use an array like the `useState()` Hook.

@@ -1,20 +1,20 @@
-export interface RickAndMorty {
+export interface RickMorty {
   info:    Info;
-  results: Result[];
+  results: Character[];
 }
 
 export interface Info {
   count: number;
   pages: number;
-  next:  string;
-  prev:  null;
+  next:  string | null;
+  prev:  string | null;
 }
 
-export interface Result {
+export interface Character {
   id:       number;
   name:     string;
   status:   Status;
-  species:  Species;
+  species:  string;
   type:     string;
   gender:   Gender;
   origin:   Location;
@@ -25,20 +25,20 @@ export interface Result {
   created:  Date;
 }
 
+export interface RickMortyByID extends Character {
+  error?:  string
+}
+
 export enum Gender {
   Female = "Female",
   Male = "Male",
+  Genderless = "Genderless",
   Unknown = "unknown",
 }
 
 export interface Location {
   name: string;
   url:  string;
-}
-
-export enum Species {
-  Alien = "Alien",
-  Human = "Human",
 }
 
 export enum Status {
