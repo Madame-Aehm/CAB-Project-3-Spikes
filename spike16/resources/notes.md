@@ -192,7 +192,7 @@ interface NotOk {
 }
 ```
 
-The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
+The syntax to recieve a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). You've probably already been doing this when you need to strictly type a `useState()` variable! I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
 
 ```tsx
 // export const useFetch = <Placeholder,> (url: string): ReturnData<Placeholder> => {   // arrow function syntax is a little different
