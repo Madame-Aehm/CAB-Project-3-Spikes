@@ -191,7 +191,7 @@ I've created two interfaces for this Hook: one represents the return of the func
 interface ReturnData<Placeholder> {
   loading: boolean;
   data: Placeholder | null;
-  error: null | string;
+  error: string;
 }
 
 interface NotOk {
@@ -242,7 +242,7 @@ export default function useFetch <Placeholder> (url: string): ReturnData<Placeho
 }
 ```
 
-Now that our Hook is ready, it's time to use it! It returns a single object with the properties, but we can destructure to use those variables directly. Be aware that we've returned an object with properties `data`, `error`, and `loading`. This means we are not restricted to the correct order, but we do have to use the right name! If you want to use the the same Hook multiple times on the same page, then you'll need rename those variables as they come in.
+Now that our Hook is ready, it's time to use it! It returns a single object with 3 properties, but we can destructure to use those variables directly. Be aware that we've returned an object with properties `data`, `error`, and `loading`. This means we are not restricted to the correct order, but we do have to use the right name! If you want to use the the same Hook multiple times on the same page, then you'll need rename those variables as they come in.
 
 We also pass it the type we expect the data to assume based on which endpoint we're fetching. This is passed between **angled brackets** ( **< >** ) after the Hook name, but before parameters parentheses. You've probably already been doing this when you need to strictly type a `useState()` variable!
 
@@ -254,4 +254,4 @@ We also pass it the type we expect the data to assume based on which endpoint we
   console.log("singleCharacter", singleCharacter);
 ```
 
-Feel free to play around with the return value. If an object doesn't suit your needs, you could use an array like the `useState()` Hook.
+Feel free to play around with the return value. If an object doesn't suit your needs, you could return an array like the `useState()` Hook.
