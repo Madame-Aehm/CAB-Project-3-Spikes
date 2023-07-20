@@ -1,23 +1,20 @@
 import { useContext } from 'react'
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 function Login() {
-  const { handleRegister } = useContext(AuthContext);
+  const { handleRegister, handleLogin } = useContext(AuthContext);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPW, setLoginPW] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPW, setRegisterPW] = useState("");
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //write code to log in user
-  }
+
 
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={(e) => handleLogin(e, loginEmail, loginPW)}>
         <input placeholder="enter email" type='email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}/>
         <input placeholder="enter password" type="password" value={loginPW} onChange={(e) => setLoginPW(e.target.value)}/>
         <button type='submit'>Login!</button>

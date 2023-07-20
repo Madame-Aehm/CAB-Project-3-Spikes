@@ -7,13 +7,17 @@ type Props = {
 }
 
 const ProtectedRoute = ({ children }: Props) => {
-  const { user } = useContext(AuthContext);
-  return user ?
-   (
-    <>
-      { children }
-    </>
-  ) : <Navigate to={"/"} replace={true} />
+  const { user, userChecked } = useContext(AuthContext);
+  return (
+    userChecked ?
+      user ?
+        (
+          <>
+            { children }
+          </>
+        ) 
+      : <Navigate to={"/"} replace={true} /> 
+    : <p>Searching for active user...</p>)
 }
 
 export default ProtectedRoute
