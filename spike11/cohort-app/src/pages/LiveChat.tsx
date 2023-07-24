@@ -7,7 +7,7 @@ import { ChatMsg, ChatMsgWithID } from '../@types/chat';
 const containerStyle: React.CSSProperties = { display: "flex", flexDirection: "column", alignItems: "center", gap: "1em" };
 const border: React.CSSProperties = { border: "solid 1px black", padding: "1em" };
 
-function Chat() {
+function LiveChat() {
   const { user } = useContext(AuthContext);
   const [textInput, setTextInput] = useState("");
   const [existingMessages, setExistingMessages] = useState<ChatMsgWithID[]>([]);
@@ -15,15 +15,15 @@ function Chat() {
   const handleSubmit = async(e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const newMessage = {
-      author: user!.email as string,
+      author: user!.email,
       date: Date.now(),
       text: textInput
     }
+    // console.log(newMessage);
     try {
       const docRef = await addDoc(collection(db, "chat"), newMessage);
-      const submittedMsg: ChatMsgWithID = { ...newMessage, id: docRef.id };
-      setExistingMessages([...existingMessages, submittedMsg]);
-      setTextInput("");
+      const submittedMsg = { ...newMessage, id: docRef.id };
+      console.log("Document written: ", submittedMsg);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -31,7 +31,7 @@ function Chat() {
 
   useEffect(() => {
     const getChats = async() => {
-      const q = query(collection(db, "chat"), orderBy("date"));
+      const q = query(collection(db, "chat"), orderBy("date", "desc"));
       const snapshot = await getDocs(q);
       console.log(snapshot);
       const chatArray:ChatMsgWithID[] = [];
@@ -54,7 +54,7 @@ function Chat() {
           return(
             <div key={msg.id} style={border}>
               <h3>{msg.author}</h3>
-              {/* <h4><i>{msg.date}</i></h4> */}
+              <h4><i>{msg.text}</i></h4>
               <p>{msg.text}</p>
             </div>
           )
@@ -68,4 +68,4 @@ function Chat() {
   )
 }
 
-export default Chat
+export default LiveChat

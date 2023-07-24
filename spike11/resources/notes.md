@@ -42,7 +42,7 @@ export default Chat
 
 I'll need a state to hold the value of my `<textarea />`, which will need to have an `onChange` event. I'll also need a `handleSubmit()` function. Log the state variable linked to the `<textarea />` value to test they're all connected (don't forget to `preventDefault()`!)
 
-Now I want to create a **JavaScript Object** to be submitted as my document. The properties I want to include are the `author` of the comment (this will be the current user, just their email will be enough to identify them), a `date` (a current date instance, I'm going to use `Date.now()` to make sorting my data by date/time nice and simple), and the `text` of the comment (the value of the text input). Log this object to the console to check what it looks like.
+Now I want to create a **JavaScript Object** to be submitted as my document. The properties I want to include are the `author` of the comment (this will be the current user, just their email will be enough to identify them), a `date` (a current date instance, I'm going to use `Date.now()` to make sorting my data by date/time nice and simple, or you could use Firestore's [`Timestamp` constructor](https://firebase.google.com/docs/reference/js/v8/firebase.firestore.Timestamp)), and the `text` of the comment (the value of the text input). Log this object to the console to check what it looks like.
 
 ```tsx
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -62,26 +62,27 @@ My `addDoc()` method will take two arguments: a callback function called `collec
 
 Adding more arguments to this function is how you will access sub-collections: the name of the parent document, then the name of the sub-collection have to be added in pairs. This logic applies the same for `setDoc()`, but the function will only accept an odd number of arguments since the new document must also be assigned an ID.
 
-Add this function to the `handleSubmit()`. The sample code is written with **async/await**, but some Typescript and ESLint rules make this difficult, so I've opted to instead use `.then()` and `.catch()` blocks. If we've set it all up correctly, we should have something logged to the console. We can now check our database - it might need to be refreshed to see the changes. We should have our first comment! 
+Add whichever function you choose to use to the `handleSubmit()`, wrapped in a try/catch block.
 
-```tsx
- const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+```ts
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const newMessage = {
-      author: user!.email,
+      author: user!.email as string, // since we've made this page a protected route, user will always exist. We know we can assure TS that there will always be an email of type string. 
       date: Date.now(),
       text: textInput
     }
-    addDoc(collection(db, "forum"), newMessage)
-    .then((docRef) => {
+    try {
+      const docRef = await addDoc(collection(db, "forum"), newMessage);
       console.log("Document written with ID: ", docRef.id);
-    })
-    .catch((e) => console.log(e));
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
 ```
 
-Wtf is happening here, why do i have to specifiy the void? 
-"on submit event react Promise-returning function provided to attribute where a void return was expected."
+Unfortunately, the original purpose for the `handleSubmit` event means Typescript gives us a little bit of trouble when we try to call our asynchronous function. One workaround is to simply disable the ESLint rule for this line, or I found the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void) helps the event accept the function. If you prefer to avoid workarounds, you can set the function to fire from `onClick` and/or `onKeyDown`.
+
 
 ```tsx
 <form style={containerStyle} onSubmit={(e) => void handleSubmit(e)}>
@@ -89,12 +90,45 @@ Wtf is happening here, why do i have to specifiy the void?
 </form>
 ```
 
-- Here I would also recommend adding some UI elements to communicate to the user when their comment has been successfully posted, such as an alert, and clearing the form.
+Here I would also recommend adding some UI elements to communicate to the user when their comment has been successfully, such as an alert, and clearing the form. Communicating errors should also be considered. You should also validate the data before sending it to Firestore - make sure all values exist, and if necessary, set some restrictions on the data.
 
-- Now that we have some comments in our database, we can write a function to [get](https://firebase.google.com/docs/firestore/query-data/get-data) and display them. I'm going to follow the steps in the documentation to **get all documents in a collection**. Documents are sorted by default by the document ID. You can specify how to [sort your data](https://firebase.google.com/docs/firestore/query-data/order-limit-data) by using **orderBy()** in the query, so I'm going to sort them by date. I would want this function to fire when the page loads so my user can view all the old comments before they add their own, so I'll write the function and call it in a useEffect. 
+Now that we have some comments in our database, we can write a function to [get](https://firebase.google.com/docs/firestore/query-data/get-data) and display them. I'm going to follow the steps in the documentation to [**get all documents in a collection**](https://firebase.google.com/docs/firestore/query-data/get-data#get_all_documents_in_a_collection). 
 
-- You'll notice the sample code is using a **forEach()** to iterate over the query result. I'm going to create a new array, and push what I want of each document into it. I can then set this to a state for my comments. Now I've got an array of comments that I can display! To mimic a real-time update, you can add some extra functionality to your **handleSubmit()** to update the state of your comments variable to include the one just posted.
+Documents are sorted by default by the document ID. You can specify how to [sort your data](https://firebase.google.com/docs/firestore/query-data/order-limit-data) by using `orderBy()` in the query, so I'm going to sort them by date.
 
-- Any formatting I'd like to do can be done through functions, such as displaying only the first part of the user email, or formatting the date. If you think it's likely you might want to use these functions again somewhere in your App, you can create a folder for **utils**, and export them from a file there. 
+You'll notice the sample code is using a `forEach()` to iterate over the query result. If we log the `snapshot` variable to the console, you'll see it's an enormous object. The sample code shows us how to run the `.data()` method over each item before we can properly use it. I'm going to create a new array, and push what I want of each document into it. I can then set this to a state for my comments. This is a good time to write an `interface` for your document. 
+
+```ts
+export interface ChatMsg {
+  author: string,
+  text: string,
+  date: number | Date
+}
+
+export interface ChatMsg extends ChatMsgWithID {
+  id: string
+}
+```
+
+I would want this function to fire when the page loads so my user can view all the old comments before they add their own, so I'll write the function and call it in a useEffect. Now I have an array of messages I can loop over and display!
+
+```ts
+  useEffect(() => {
+    const getChats = async() => {
+      const q = query(collection(db, "chat"), orderBy("date"));
+      const snapshot = await getDocs(q);
+      // console.log(snapshot); // to see the whole object
+      const chatArray:ChatMsgWithID[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data() as ChatMsg;
+        chatArray.push({ ...data, id: doc.id }); // id exists on the doc before using .data(), I use a spread operator to push them into a single object
+      })
+      setMessages(chatArray);
+    }
+    getChats().catch((e) => console.log(e));
+  }, [])
+```
+
+When you add a new comment, your local state doesn't update automatically. You can add some extra functionality to your `handleSubmit()` to update the state of your `messages` array to include the one just posted. Alternatively, you could trigger a "refetch" from the database. This seems wasteful to me, since it consumes more resources to make a fresh call to the database, and you have both your current array and the new item available to you, but in a pinch it works!
 
 - Firestore _can_ also get [real-time updates](https://firebase.google.com/docs/firestore/query-data/listen) by setting up a 'listener' on a document. I'm going to make two new functions to compare the functionality - a new submit function, and a new getComments function. The submit function will be very much the same - I'll just remove the steps to manually update the comments state. My get function will also look very similar, but the whole thing will be wrapped in an **onSnapshot()**. The 'unsubscribe' returned from this function can be called to **detach** the listener. 
