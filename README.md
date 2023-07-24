@@ -1,22 +1,28 @@
 # Project 3
 
-## Spike 11 - React Intro p1
+## Spike 1 - Typescript Intro
 
-## Spike 12 - React Intro p2
+## Spike 2 - React Intro p1
 
-## Spike 13 - Styling in React
+## Spike 3 - React Intro p2
+
+## Spike 4 - Styling in React
 
 ## Present Rick & Morty App
 
-## Spike 14 - React Router Intro
+## Spike 5 - Typescript and React
 
-## Spike 15 - Dynamic & Nested Routes
+## Spike 6 - React Router Intro
 
-## Spike 16 - React Context + Custom Hooks
+## Spike 7 - Dynamic & Nested Routes
 
-## Spike 17 - Firebase Authentication
+## Spike 8 - React Context with Typescript + Protected Layout
 
-## Spike 18 - Firebase Firestore (database)
+## Spike 9 - Custom Hooks with Typescript 
+
+## Spike 10 - Firebase + Firebase Authentication
+
+## Spike 11 - Firebase Firestore
 
 ## Presentation:
 - Live demonstration (max 5 minutes)
