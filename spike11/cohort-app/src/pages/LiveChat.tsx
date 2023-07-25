@@ -1,11 +1,11 @@
 import { FormEvent, useContext, useState, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext';
-import { collection, addDoc, query, getDocs, orderBy } from "firebase/firestore";
+import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from '../firebase';
 import { ChatMsg, ChatMsgWithID } from '../@types/chat';
 
 const containerStyle: React.CSSProperties = { display: "flex", flexDirection: "column", alignItems: "center", gap: "1em" };
-const border: React.CSSProperties = { border: "solid 1px black", padding: "1em" };
+const border: React.CSSProperties = { border: "solid 1px black", padding: "1em", marginBottom: "1em" };
 
 function LiveChat() {
   const { user } = useContext(AuthContext);
@@ -23,6 +23,7 @@ function LiveChat() {
     try {
       const docRef = await addDoc(collection(db, "chat"), newMessage);
       const submittedMsg = { ...newMessage, id: docRef.id };
+      setTextInput("");
       console.log("Document written: ", submittedMsg);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -30,31 +31,31 @@ function LiveChat() {
   }
 
   useEffect(() => {
-    const getChats = async() => {
-      const q = query(collection(db, "chat"), orderBy("date", "desc"));
-      const snapshot = await getDocs(q);
-      console.log(snapshot);
-      const chatArray:ChatMsgWithID[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data() as ChatMsg;
-        chatArray.push({ ...data, id: doc.id });
-      })
-      console.log(chatArray);
-      setExistingMessages(chatArray);
-    }
-    getChats().catch((e) => console.log(e));
+    const q = query(collection(db, "chat"), orderBy("date"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const messages:ChatMsgWithID[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as ChatMsg
+        messages.push({ ...data, id: doc.id });
+      });
+      console.log(messages);
+      setExistingMessages(messages);
+    },
+    (error) => {
+      console.log(error);
+    })
+    return () => unsubscribe();
   }, [])
   
 
   return (
     <div style={containerStyle}>
-      <h1>Chat/Forum!</h1>
-      <div>
+      <h2>Chat/Forum!</h2>
+      <div style={{ ...border, width: "90%", maxHeight: "400px", overflow: "auto" }}>
         { existingMessages.map((msg) => {
           return(
             <div key={msg.id} style={border}>
               <h3>{msg.author}</h3>
-              <h4><i>{msg.text}</i></h4>
               <p>{msg.text}</p>
             </div>
           )

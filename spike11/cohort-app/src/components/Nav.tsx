@@ -17,6 +17,7 @@ const Nav = () => {
           <>
             <Link to={"/characters"}>Characters</Link>
             <Link to={"/chatroom"}>Chatroom</Link>
+            <Link to={"/live-chat"}>Live Chat</Link>
             <button onClick={logout}>Logout</button>
           </> 
         : <Link to={"/login"}>Login</Link>

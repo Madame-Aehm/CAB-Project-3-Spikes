@@ -129,6 +129,29 @@ I would want this function to fire when the page loads so my user can view all t
   }, [])
 ```
 
-When you add a new comment, your local state doesn't update automatically. You can add some extra functionality to your `handleSubmit()` to update the state of your `messages` array to include the one just posted. Alternatively, you could trigger a "refetch" from the database. This seems wasteful to me, since it consumes more resources to make a fresh call to the database, and you have both your current array and the new item available to you, but in a pinch it works!
+When you add a new comment, your local state doesn't update automatically. You can add some extra functionality to your `handleSubmit()` to update the state of your `messages` array to include the one just posted. Alternatively, you could trigger a "refetch" from the database. This is a less optimized approach, since it consumes more resources to make a fresh call to the database every single time, especially since you have both your current array and the new item available to you, but in a pinch it works! 
 
-- Firestore _can_ also get [real-time updates](https://firebase.google.com/docs/firestore/query-data/listen) by setting up a 'listener' on a document. I'm going to make two new functions to compare the functionality - a new submit function, and a new getComments function. The submit function will be very much the same - I'll just remove the steps to manually update the comments state. My get function will also look very similar, but the whole thing will be wrapped in an **onSnapshot()**. The 'unsubscribe' returned from this function can be called to **detach** the listener. 
+For something that only the current user's activity affects, this functionality is absolutely fine. But if you have multiple users adding to a chat collection, but only their own additions are being shown until a fresh fetch is made, we can't really call this a "chat". A true chat is live - and Firestore actually does offer [real-time updates](https://firebase.google.com/docs/firestore/query-data/listen) by setting up a 'listener' on a document or collection. 
+
+I'm going to make a new component to compare this functionality. The submit function will be very much the same - I'll just remove the steps to manually update the state. Firebase provides a function `onSnapshot()`, which I will call in my `useEffect()`. Combining the sample code with what I already wrote for the last `getChats()` function, I'll create a listener that updates my state every time it senses a change to the collection. The 'unsubscribe' returned from this function can be called to **detach** the listener, we should do this in the [**clean up**](https://react.dev/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) `return` of our `useEffect()`.
+
+```tsx
+  useEffect(() => {
+    const q = query(collection(db, "chat"), orderBy("date"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const messages:ChatMsgWithID[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as ChatMsg
+        messages.push({ ...data, id: doc.id });
+      });
+      console.log(messages);
+      setExistingMessages(messages);
+    },
+    (error) => {
+      console.log(error);
+    })
+    return () => unsubscribe();
+  }, [])
+```
+
+This connects our local state to the actual state of the collection. If any change is made, by our user or another, we will see it in our UI. Open a different browser and sign in as a different user to test!

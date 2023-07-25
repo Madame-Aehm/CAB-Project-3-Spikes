@@ -29,19 +29,20 @@ function Chat() {
     }
   }
 
+  const getChats = async() => {
+    const q = query(collection(db, "chat"), orderBy("date"));
+    const snapshot = await getDocs(q);
+    console.log(snapshot);
+    const chatArray:ChatMsgWithID[] = [];
+    snapshot.forEach((doc) => {
+      const data = doc.data() as ChatMsg;
+      chatArray.push({ ...data, id: doc.id });
+    })
+    console.log(chatArray);
+    setExistingMessages(chatArray);
+  }
+
   useEffect(() => {
-    const getChats = async() => {
-      const q = query(collection(db, "chat"), orderBy("date"));
-      const snapshot = await getDocs(q);
-      console.log(snapshot);
-      const chatArray:ChatMsgWithID[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data() as ChatMsg;
-        chatArray.push({ ...data, id: doc.id });
-      })
-      console.log(chatArray);
-      setExistingMessages(chatArray);
-    }
     getChats().catch((e) => console.log(e));
   }, [])
   

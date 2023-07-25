@@ -12,6 +12,7 @@ import Login from './pages/Login.tsx'
 import Chat from './pages/Chat.tsx'
 import NavLayout from './components/NavLayout.tsx'
 import Error404 from './pages/Error404.tsx'
+import LiveChat from './pages/LiveChat.tsx'
 
 
 const protectedRoutes = [
@@ -22,6 +23,10 @@ const protectedRoutes = [
   {
     path: '/chatroom',
     element: <Chat />
+  },
+  {
+    path: '/live-chat',
+    element: <LiveChat />
   }
 ]
 const navLayoutRoutes = [
@@ -61,6 +66,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
             <Route path='/characters' element={ <Characters /> } />
             <Route path='/chatroom' element={ <Chat /> } />
+            <Route path= '/live-chat' element={ <LiveChat /> } />
           </Route>
         </Routes>
       </BrowserRouter> */}
