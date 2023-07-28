@@ -42,7 +42,7 @@ React code is broken down into smaller pieces known as [**Components**](https://
 
 ### JSX
 
-[JSX](https://react.dev/learn/writing-markup-with-jsx) is a mix between HTML and JavaScript. You can't return raw HTML elements from a JavaScript function, so JSX was developed to simplify DOM manipulation. You don't need to manually `document.createElement("h1")` in React, you can simply write your `<h1>` in the return of your Component, and because everything is wrapped inside the React `.render()` method on `main.jsx`, React will create and append it for you.
+[JSX](https://react.dev/learn/writing-markup-with-jsx) is a mix between HTML and JavaScript. You can't return raw HTML elements from a JavaScript function (you would have to write them as a `string`), so JSX was developed to simplify DOM manipulation. You don't need to manually `document.createElement("h1")` in React, you can simply write your `<h1>` in the return of your Component, and because everything is wrapped inside the React `.render()` method on `main.jsx`, React will create and append it for you.
 
 It's important to remember though, that the return of a function can only return **one** element. If you're returning multiple JSX elements, you'll need to wrap them in a container, such as a `<div>`. Occasionally, we want to seperate multiple elements into a single Component for logic reasons, but an additional `<div>` or `<span>` would mess with our layout or styling. In this case we can use a special React element called a **Fragment**, as `<React.Fragment>` or simply `<>`. 
 
@@ -64,7 +64,7 @@ A **ternary operator** can function like shortened syntax for an **if... else...
 
 ### Looping
 
-Since you can escape into JavaScript within the JSX, you can also utilize loops like `.map()` and `forEach()`. When you're generating many copies of the same element/Component, however, React wants to be able to keep track of them so it requires the **outermost returned element** to have a `key` property. This key **must** be unique on the **page**. If you're only looping once on the page, you know you're safe to use the **index** of each element in the array you're looping over. If you have multiple loops however, then those index values will no longer be unique. Don't forget that looping inside a Component being rendered on that page will also count! If the data items have some unique ID property, this is the best scenario. Otherwise, you can use some **string concatenation**/**template literals** to create your own unique key. 
+Since you can escape into JavaScript within the JSX, you can also utilize loops like `.map()` and `.forEach()`. When you're generating many copies of the same element/Component, however, React wants to be able to keep track of them so it requires the **outermost returned element** to have a `key` property. This key **must** be unique on the **page**. If you're only looping once on the page, you know you're safe to use the **index** of each element in the array you're looping over. If you have multiple loops however, then those index values will no longer be unique. Don't forget that looping inside a Component being rendered on that page will also count! If the data items have some unique ID property, this is the best scenario. Otherwise, you can use some **string concatenation**/**template literals** to create your own unique key. 
 
 ### Props
 
