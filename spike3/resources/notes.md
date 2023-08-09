@@ -1,4 +1,4 @@
-# Spike 3 - React Intro p2
+# Project 3: Spike 3 
 
 ## Events
 

@@ -1,4 +1,4 @@
-# Spike 11 - React Intro p1
+# Project 3: Spike 2
 
 ## MPA, SPA & PWA
 

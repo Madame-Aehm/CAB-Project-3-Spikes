@@ -1,4 +1,6 @@
-# Spike 9 - Custom Hooks with Typescript
+# Project 3: Spike 9 
+
+## Custom Hooks
 
 We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally adviced to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
 

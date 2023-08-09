@@ -1,6 +1,6 @@
-# Spike 7 notes - React Router Continued...
+# Project 3: Spike 7
 
-### Nested Routes
+## Nested Routes
 
 We've seen how to build some flat routes, but it's also possible to nest routes inside each other. Each route object in our BrowserRouter array can also accept a property `children`, which will be another array of routes! As an example, let's create an `<About />` component to be rendered at `"/about"`. I have two themes I want to cover in my about section: about the company, and about the developer, so I would like to show different components at `"/about/dev"` and `"/about/company"`. I'll need components for all of them, then add a new path with children to the routes tree.
 
@@ -27,7 +27,7 @@ If we visit the nested routes, however, we're still only seeing the main route. 
 
 If you're using `<NavLink>` components for your NavBar, you'll notice the "parent" route always stays active when visiting a nested route. To remove this default behaviour, you can add the property `end` to the `<NavLink>`.
 
-### Layout Routes
+## Layout Routes
 
 The `children` property on Route objects and the `<Outlet />` component can also be used to make a consistent layout for your routes! Let's create a simple Layout component. Create a folder in `components` called `layouts`, and a file called `WithNav.tsx`. All we want to do is have our `<NavBar />` component at the top of most pages, without having to manually insert it into every page. We will use `props.children` in our `WithNav.tsx` to represent the content of whatever page component out layout is being passed. Since we know this will always be a `ReactNode`, we can apply this Type to the `children` property on the component's props. 
 
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
 ])
 ```
 
-### Dynamic Routes (URL Parameters) with useParams()
+## Dynamic Routes (URL Parameters) with useParams()
 
 Some of you may have used **URL parameters** in your last project. If you didn't, you very likely used parameters in one or more of the endpoints from your API. "Parameters" or "params" refer to dynamic values in the URL that the file being requested can then access. 
 
@@ -115,7 +115,7 @@ On the `Character.tsx` component, we can now use React Router's `useParams()` Ho
 
 Take care to either verify the ID before doing the fetch, or to add a conditional to catch any errors. In this case, I know that the ID will never be undefined, because if there is no ID, then my usual `"/characters/"` route will apply. But what if your user types something else? If there isn't a response from the API, have some conditional rendering to signal that to the user. 
 
-### optional: Route loader, errorElement, etc
+## optional: Route loader, errorElement, etc
 
 The newest version of React Router offers us some additional APIs to use with our Routes. Two very useful are [**loader**](https://reactrouter.com/en/main/route/loader) and [**errorElement**](https://reactrouter.com/en/main/route/error-element). The `loader` property on the route object let's you assign a function to provide data to the route element _before_ it renders. We could have the `loader` do our fetch, so that there's no need to fetch within a useEffect. We might still need to use a useEffect to assign the correct states their values from the loader response, but the fetch itself will already be finished before the page has finished loading. Let's try it for our `"/characters"` and `"characters/:id"` routes.
 

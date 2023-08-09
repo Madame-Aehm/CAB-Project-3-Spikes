@@ -1,4 +1,6 @@
-# Spike 11 - Firebase Firestore (database)
+# Project 3: Spike 11
+
+## Firebase Firestore (database)
 
 [**Firestore**](https://firebase.google.com/docs/firestore) is one of two Firebase database options available. You may have read something about the **Firebase Realtime Database**, which offers much of the same functionality, with a different data structure. If you'd like to read about the differences, [here](https://firebase.blog/posts/2017/10/cloud-firestore-for-rtdb-developers) is a good article. We will only have time to cover one, so we're going to use Firestore.
 

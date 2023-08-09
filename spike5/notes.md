@@ -1,4 +1,4 @@
-# Typescript Part 2
+# Project 3: Spike 5
 
 ## Typescript in React
 

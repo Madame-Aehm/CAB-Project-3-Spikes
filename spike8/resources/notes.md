@@ -1,4 +1,4 @@
-# Spike 8 - Context + Protected Layout
+# Project 3: Spike 8 
 
 ## React Context
 

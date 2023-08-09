@@ -1,6 +1,6 @@
-# Spike 4 - Styling in React
+# Project 3: Spike 4
 
-# Styling 
+## Styling in React
 
 Styling with `.css` files in React is a bit different than with an MPA as `.css` files are **imported**.  Due of the nested nature of Components, this makes applying Global Styles very easy, as CSS styles applied to the parent will also apply to the children. But once you get into deeper Components, avoiding conflict with selectors can be tricky.
 

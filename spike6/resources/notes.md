@@ -1,4 +1,6 @@
-# Spike 6 - React Router Intro
+# Project 3: Spike 6 
+
+## React Router
 
 [**React Router**](https://reactrouter.com/en/main/start/overview) is React's answer to "pages". React is a single page application, which means that it's really only a single `index.html` file which we then use JavaScript to fill dynamically. React Router lets you set "routes" that will render specific page components when that route is visited. 
 
@@ -8,7 +10,7 @@ React Router is an additional package that we have to install:
 npm install react-router-dom
 ```
 
-### Browser Router
+## Browser Router
 
 We will be using the **BrowserRouter**. There are several [routers](https://reactrouter.com/en/main/routers/picking-a-router) available, depending on the environment, but BrowserRouter is the recommended router for web projects. The first step is to [**create**](https://reactrouter.com/en/main/routers/create-browser-router) an instance of the router using `createBrowserRouter()`. This function will accept an array of objects - this is where you define your individual routes. The route object will need the `path` you intend for your route (ie. the URL), and the `element` (ie. the page Component you wish to be rendered when a user navigates to this route).
 
@@ -67,7 +69,7 @@ There is a pre-made `<Link>` component that we can import from "react-router-dom
 <Link to="/about">About</Link>
 ```
 
-### useLocation()
+## useLocation()
 
 React Router Dom provides a few custom Hooks, `useLocation()` being one that provides information about the page. If we save this as a variable and log it to the console, we can have a look at it. The property `state` can be used to transfer some data through the `<Link>` component. Whatever is passed as state props, can then be accessed through `location.state` on the other end. Be aware though, that clicking the Link is necessary to trigger the transfer. If a user navigates to the page manually through the URL, or returns there with the back button, `state` will be `null`.
 
@@ -111,7 +113,7 @@ function Navbar() {
 }
 ```
 
-### useNavigate()
+## useNavigate()
 
 React Router's `useNavigate()` [hook](https://reactrouter.com/en/main/hooks/use-navigate) can also be used to navigate between pages. Let's experiment by using the `useNavigate()` hook function component to create a back buttons from our Error page. Create a variable `navigate` to hold the return of the Hook. The first argument accepted by the `navigate()` function is the path. This will usually be a string, but you could also put `-1` to mimic the behaviour of the back button in the browser. 
 

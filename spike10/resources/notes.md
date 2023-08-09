@@ -1,6 +1,6 @@
-# Spike 10 - Firebase + Firebase Authentication
+# Project 3: Spike 10
 
-## Firebase Set-up
+## Firebase
 
 **Firebase** is a Google service, it is effectively a pre-built backend. We will use their [**Authentication** service](https://firebase.google.com/docs/auth?hl=en) to create a user database. We can then use their pre-written **CRUD** functions to **create**, **read**, **update**, **delete** authenticated users.
 

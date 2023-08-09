@@ -1,4 +1,6 @@
-## Spike 1 - Typescript Intro
+# Project 3: Spike 1
+
+## Typescript Intro
 
 **Typescript** is a programming language that builds on top of JavaScript. Most programming languages are already **strongly typed**, so Typescript was developed to deal with the many problems that come from JavaScript's over-flexibility. It will help us catch bugs before you ever have to see your app crash, and because it sits on top of JavaScript there is very little learning curve if you already understand JavaScript. [Read more](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html).
 
