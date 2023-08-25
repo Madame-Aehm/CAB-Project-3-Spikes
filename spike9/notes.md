@@ -4,7 +4,7 @@
 
 We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally adviced to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
 
-Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevent `useState` variables (data, loading, error).
+Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevant `useState` variables (data, loading, error).
 
 ```jsx
 const useFetch = (url) => {
@@ -63,7 +63,7 @@ interface NotOk {
 }
 ```
 
-The syntax to _recieve_ a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger refetches.
+The syntax to _receive_ a generic type inside a function is to have it follow the function name in **angled brackets** ( **< >** ). I also type the return of the function using the `ReturnData` type I created, and I feed the the generic type it needs for the data. Then, everything inside the function is the same as usual: we create states to hold `data`, `error`, and `loading`, then use a useEffect to call the fetch function. We'll be sending the URL endpoint as normal parameters, so put this in the dependency array of the useEffect to trigger re-fetches.
 
 ```tsx
 // export const useFetch = <Placeholder,> (url: string): ReturnData<Placeholder> => {   // arrow function syntax is a little different

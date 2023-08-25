@@ -14,9 +14,9 @@ If you want to use CSS classes to do styling, make sure to use JSX `className`, 
 
 ## Inline Style
 
-React also allows [**inline styling**](https://www.w3schools.com/react/react_css.asp) with the `style` property. This property takes a JavaScript object - key/value pairs wwhich represent the CSS property to be styled, and value. JSX requires **camelCase** keys, and **string** values. Writing the style directly into the element `style` property is helpful as VSCode will recognise and make suggestions for you. Once you have it styled how you like, if you want to clean your JSX and seperate your style object, you can create a variable to hold that value and then pass that variable to the `style` property. 
+React also allows [**inline styling**](https://www.w3schools.com/react/react_css.asp) with the `style` property. This property takes a JavaScript object - key/value pairs which represent the CSS property to be styled, and value. JSX requires **camelCase** keys, and **string** values. Writing the style directly into the element `style` property is helpful as VSCode will recognise and make suggestions for you. Once you have it styled how you like, if you want to clean your JSX and separate your style object, you can create a variable to hold that value and then pass that variable to the `style` property. 
 
-If you choose to style this way, you can create a seperate `styles.js` file and export all these variables to be used where you need them across your app. There are some major limitations to styling this way, however. Pseudoclasses and Media Queries, for example, cannot be used. 
+If you choose to style this way, you can create a separate `styles.js` file and export all these variables to be used where you need them across your app. There are some major limitations to styling this way, however. Pseudoclasses and Media Queries, for example, cannot be used. 
 
 ## CSS Libraries
 

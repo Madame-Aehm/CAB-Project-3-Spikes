@@ -64,7 +64,7 @@ myNum = 69; // this is fine
 myNum = "This is a string"; // this will cause an error
 ```
 
-If we don't **explicitly** assign a Type when we declare a variable, the Type will be **inferred** and assigned automatically based on the Type of the value. In VSCode, you can hover your mouse over any variable to see the Type. If your variable Type is flexible, you can declare what's called a **Union Type**, seperate each relevant Type with a **|** symbol (note that in Typescript, you only need **one** **|** symbol to represent an **Or Operator**):
+If we don't **explicitly** assign a Type when we declare a variable, the Type will be **inferred** and assigned automatically based on the Type of the value. In VSCode, you can hover your mouse over any variable to see the Type. If your variable Type is flexible, you can declare what's called a **Union Type**, separate each relevant Type with a **|** symbol (note that in Typescript, you only need **one** **|** symbol to represent an **Or Operator**):
 
 ```ts
 let myVariable: string | number = "This is a string"; // this is ok
@@ -73,7 +73,7 @@ myVariable = 42; // this is also ok
 
 ## Type Aliases
 
-If we find ourselves using the same combination of Types many times, we can create a **Type Alias** to hold that value. Think of it like a custom Type. We do this by using the declaration `type`, and then assigning a name (the Alias). It's not compulsory, but good pracise is to give your Types capitalized Aliases to help differentiate Types from variables:
+If we find ourselves using the same combination of Types many times, we can create a **Type Alias** to hold that value. Think of it like a custom Type. We do this by using the declaration `type`, and then assigning a name (the Alias). It's not compulsory, but good practise is to give your Types capitalized Aliases to help differentiate Types from variables:
 
 ```ts
 type StrNum = string | number

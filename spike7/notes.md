@@ -23,7 +23,7 @@ We've seen how to build some flat routes, but it's also possible to nest routes 
 
 Notice we omit the **/** for the nested routes. A **/** symbol creates an **absolute** route. If you were to use an absolute route, you would need to specify the full path, like `"/about/developer"`. Be very careful about typos if you choose to define nested routes this way! 
 
-If we visit the nested routes, however, we're still only seeing the main route. The child component of a nested route component can be viewed using the special React Router component `<Outlet />`. This component will need to be placed on the main `<About />` component - it checks the location, and then renders the specified element when the pathname matches. This is great for making tabs or sub-menus. To replace the entire page component, you're probably better to just make a seperate route. Alternatively, you could take the pathname from `useLocation()` Hook and apply some conditional rendering.
+If we visit the nested routes, however, we're still only seeing the main route. The child component of a nested route component can be viewed using the special React Router component `<Outlet />`. This component will need to be placed on the main `<About />` component - it checks the location, and then renders the specified element when the pathname matches. This is great for making tabs or sub-menus. To replace the entire page component, you're probably better to just make a separate route. Alternatively, you could take the pathname from `useLocation()` Hook and apply some conditional rendering.
 
 If you're using `<NavLink>` components for your NavBar, you'll notice the "parent" route always stays active when visiting a nested route. To remove this default behaviour, you can add the property `end` to the `<NavLink>`.
 
@@ -50,7 +50,7 @@ const WithNav = (props: Props) => {
 export default WithNav
 ```
 
-Now, back over on my `main.tsx`, I can create a "layout route". This is essentially a route with no `path`. The `children` will be any routes you wish the layout to apply to. In this case, I want my `<WithNav>` to apply to every page except my 404. (It might be a good idea to seperate the sub-arrays into variables at this point, just for readability). The `<Outlet />` component represents the child element when the pathname matches, so I will pass it as children to my `<WithNav>` component by putting it between the opening and closing tags.
+Now, back over on my `main.tsx`, I can create a "layout route". This is essentially a route with no `path`. The `children` will be any routes you wish the layout to apply to. In this case, I want my `<WithNav>` to apply to every page except my 404. (It might be a good idea to separate the sub-arrays into variables at this point, just for readability). The `<Outlet />` component represents the child element when the pathname matches, so I will pass it as children to my `<WithNav>` component by putting it between the opening and closing tags.
 
 ```tsx
 const router = createBrowserRouter([
@@ -94,7 +94,7 @@ Some of you may have used **URL parameters** in your last project. If you didn't
 
 On the `Characters.tsx` component, let's make a fetch request to the Rick and Morty API. I have used a combination of [QuickType](https://app.quicktype.io/) and the [Character Schema](https://rickandmortyapi.com/documentation/#character-schema) supplied by the API docs to create some types in my `index.d.ts` in the `@types` folder (I manually create these - Vite doesn't include them in the boilerplate). 
 
-We can then make a small card component to display each character, like what we did for the practice challenge. But instead of opening a model, I'm going to link to a new page. This page will be a single component, but it will recieve the character ID through the params. With that ID, the page will be able to make a fresh fetch request to the API for that specific character.
+We can then make a small card component to display each character, like what we did for the practice challenge. But instead of opening a model, I'm going to link to a new page. This page will be a single component, but it will receive the character ID through the params. With that ID, the page will be able to make a fresh fetch request to the API for that specific character.
 
 In my pages folder, I will create a page component to be the landing page for my dynamic route. Then, in my `main.tsx`, I will add a route object for it in my router. I'm going to set the path to `"characters/:id"`. The **colon** ( **:** ) represents a dynamic value in a URL. I could make this a nested route of my "characters" route, but I don't want to mess about the with `<Outlet />`, so I'm going to just use an absolute route to mimic the connection.
 
@@ -129,7 +129,7 @@ The newest version of React Router offers us some additional APIs to use with ou
 },
 ```
 
-To access the return of this function, we use the `useLoaderData()` Hook on the component. If we comment out our useEffect and log the Hook result to the console, we can see it's the same fetch response we would normally recieve. We can now handle that data how we want. I will still always check for errors, and I will still need to set the types of my response data. 
+To access the return of this function, we use the `useLoaderData()` Hook on the component. If we comment out our useEffect and log the Hook result to the console, we can see it's the same fetch response we would normally receive. We can now handle that data how we want. I will still always check for errors, and I will still need to set the types of my response data. 
 
 ```tsx
 const loaderData = useLoaderData() as RickMorty;

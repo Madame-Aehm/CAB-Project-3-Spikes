@@ -80,7 +80,7 @@ Typescript can automatically infer the type from usage. Let's create a state for
 const [catName, setCatName] = useState("coolcat420");
 ```
 
-To explicitly Type `catName` to accept a `number` **or** a `string`, we'll have to pass those Types into the Hook using **Generics** (we will cover this in more depth when we cover Custom Hooks). For now, know that you can use **angled brackets** to pass the desired Types into the Hook. (A single bar **|** funtions as an **or** operator in Typescript).
+To explicitly Type `catName` to accept a `number` **or** a `string`, we'll have to pass those Types into the Hook using **Generics** (we will cover this in more depth when we cover Custom Hooks). For now, know that you can use **angled brackets** to pass the desired Types into the Hook. (A single bar **|** functions as an **or** operator in Typescript).
 
 ```tsx
 const [catName, setCatName] = useState<string | number>("coolcat420");
@@ -118,6 +118,6 @@ TypeScript provides us a lot of information on type errors to help us understand
 
 ## Links
 
-[React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
+[React TypeScript Cheat Sheet](https://react-typescript-cheatsheet.netlify.app/)
 
 [TypeScript Error translator](https://ts-error-translator.vercel.app/)

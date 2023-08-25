@@ -98,7 +98,7 @@ When using the Ternary Operator, pay attention to the Types of values you're pas
 
 Another way to achieve the same result is to use a different component supplied by React Router called `<NavLink>`, which has an active class without the need for `useLocation()`. The component adds the class "active" to the classlist by default if the pathname matches, so you can then just have to make sure you have a CSS class `.active`, and those styles will automatically apply. 
 
-If you're using CSS modules or `style` property, however this won't work. Luckily, the `className` or `style` property on a `<NavLink>` will also accept a function. This function recieves a parameter `isActive`, which will be true or false according to the active state. Use this to set your styles.
+If you're using CSS modules or `style` property, however this won't work. Luckily, the `className` or `style` property on a `<NavLink>` will also accept a function. This function receives a parameter `isActive`, which will be true or false according to the active state. Use this to set your styles.
 
 ```js
 import { NavLink } from "react-router-dom";

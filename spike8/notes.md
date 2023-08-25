@@ -6,7 +6,7 @@ The issue of **state management** in React can be very complicated. You have one
 
 React now has a built in tool called [**Context**](https://react.dev/learn/passing-data-deeply-with-context) to help with this. It sets up a **provider** which can wrap the whole app, any component inside can then independently access information held on the Context. Think carefully about what data you are going to need to keep track of across the entire App, such as information about the current User or active theme. 
 
-Context is very convenient, but be aware that it requires more processing power, since the data it holds is essentally **global**. When you update the value of your Context, _all_ components using the Context will also re-render. It isn't [always](https://blog.logrocket.com/pitfalls-of-overusing-react-context/) the best solution. 
+Context is very convenient, but be aware that it requires more processing power, since the data it holds is essentially **global**. When you update the value of your Context, _all_ components using the Context will also re-render. It isn't [always](https://blog.logrocket.com/pitfalls-of-overusing-react-context/) the best solution. 
 
 We will start by creating a new folder in our 'src' to hold all our Context files. In this folder, I'll create a file and call it `AuthContext.tsx`. This file is going to hold all the data about a user, if we have one. It can also be used to indicate when there _isn't_ a user, since we'll make some pages or components only available to logged-in users.
 
@@ -56,7 +56,7 @@ The Provider exists as a property on my Context, so from the `main.tsx`, I can w
 </AuthContext.Provider>
 ```
 
-The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers seperate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
+The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers separate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
 
 ```ts
 type Props = {
