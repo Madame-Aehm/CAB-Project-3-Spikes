@@ -35,3 +35,5 @@
   - show us your Firestore database and explain your data structure
   - what are you most proud of/what is your favourite feature or function?
   - what did you find the most challenging?
+
+## React App Deployment Tips
