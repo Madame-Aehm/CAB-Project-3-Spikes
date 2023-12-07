@@ -2,11 +2,11 @@
 
 ## Spike 1 - Typescript Intro
 
-## Spike 2 - React Intro p1
+## Spike 2 - React Intro p1 (SPA, Vite, JSX, Functional Components, Strict Mode, Conditional Rendering, Looping, Props)
 
-## Spike 3 - React Intro p2
+## Spike 3 - React Intro p2 (Events, State, Effects)
 
-## Spike 4 - Styling in React
+## Spike 4 - Styling in React (CSS Modules, Inline Style, CSS Libraries, Layout Components)
 
 ## Present Rick & Morty App
 

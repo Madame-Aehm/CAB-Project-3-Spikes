@@ -23,3 +23,5 @@ If you choose to style this way, you can create a separate `styles.js` file and 
 If you would like to use a CSS library, they will usually have an npm package that you can install. They will then have finished React Components that you can import and use. Make sure to read the documentation. 
 
 Alternatively, a library called [**Styled Components**](https://styled-components.com/) exists that let's you write CSS within your Component using template literals. This works very well [together](https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app) with [Material UI](https://mui.com/) CSS Library. 
+
+## Layout Components
