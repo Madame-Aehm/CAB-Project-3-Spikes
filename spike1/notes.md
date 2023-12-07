@@ -8,7 +8,7 @@ To install Typescript globally, run `npm install -g typescript`. You can test wh
 
 ## Transpiling
 
-**Transpiling** refers to the process of "translating" Typescript into plain JavaScript. Web browsers can't read Typescript alone, it only exists to help the developer write better code. So before a project can be deployed, the Typescript transpiler will generate equivalent `.js` files for all your `.ts` files. For a larger React project, this will happen on build before we deploy, but let's look at a smaller scale example. 
+**Transpiling** refers to the process of "translating" Typescript into plain JavaScript. Typescript is what is known as a **development tool**. Web browsers can't read Typescript alone, it only exists to help the developer write better code. So before a project can be deployed, the Typescript transpiler will generate equivalent `.js` files for all your `.ts` files. For a larger React project, this will happen on build before we deploy, but let's look at a smaller scale example. 
 
 Create an `index.ts` file. Have it log a simple string to the console. When we run the command `tsc index.ts`, this file is transpiled into JavaScript, and a `.js` copy of the file is generated. If we look inside, it looks the same. But what if we use some more complicated JavaScript functionality, such as an asynchronous function?
 

@@ -20,7 +20,7 @@ React was developed by Facebook to have live newsfeed updates without needing to
 
 In order to run a React development server, you need to have Node installed. You can check if you already have Node installed by running `node -v` from any terminal. If you get a version number, it's already on your device. If you get an error, you'll need to [install](https://nodejs.org/en) it. 
 
-When you installed Node, it should also have included the [**npm** package manager](https://docs.npmjs.com/about-npm). **Packages** are pre-written code bundles that we can install and use in our project, rather than writing everything from scratch. They can be as simple as a single function, or massively complicated. If you're using a styling library like Bootstrap, they will offer a React compatible package you can install for your project. The package manager keeps all this organised. When you push your code to GitHub, you don't push all the installed packages, you push a `package.json` file which describes all the project's package **dependencies**. If you clone a project, you'll have to run `npm install` to install all the packages listed in the repo's `package.json`.
+When you installed Node, it should also have included the [**npm** package manager](https://docs.npmjs.com/about-npm). **Packages** are pre-written code bundles that we can install and use in our project, rather than writing everything from scratch. They can be as simple as a single function, or massively complicated. If you're using a styling library like Bootstrap, they will offer a React compatible package you can install for your project. The package manager (npm, yarn, etc) keeps all this organised. When you push your code to GitHub, you don't push all the installed packages (it would be huge!!), you push a `package.json` file which describes all the project's package **dependencies**. If you clone a project, you'll have to run `npm install` to install all the packages listed in the repo's `package.json`.
 
 We're going to use a script from [Vite](https://vitejs.dev/guide/) to create our App. You can create a React App manually, but you will need to use some external technology like Webpack and Babel to bundle the JavaScript. Vite will take care of all that for us. Vite is a fairly new service, so if you're looking at old tutorials you might see that programmers used to use the script `npx create-react-app` to create new projects. This still works, but it's no longer actively maintained by Meta and so it is bloated with outdated packages. 
 
@@ -48,9 +48,9 @@ It's important to remember though, that the return of a function can only return
 
 It's going to make things much easier if you can recognise a React Component as a special type of JavaScript function. We always give Components **Capitalized names** to differentiate them from regular JavaScript functions. When you want to use your Component, it's "called" like an HTML element in the JSX. Look at the `main.jsx` to see how it calls the App Component `<App />`. If you call the `<App />` Component again right underneath, all that content will appear twice. 
 
-In React, you will typically have one Component per file. This is so you can default export the single variable, and it keeps your code organised. But to demonstrate the relationship between Components, we can put some together in a single file. I'll create a second Component in `App.jsx` called App2, and then I'll update the export to include both App and App2. **Default export** means that a file is only exporting a single variable. **export** can be used to export multiple variables grouped together in curly braces. However you export your variable will be how it needs to be imported on the other end. 
+I'll create a second Component in `App.jsx` called `App2`. I can call the `<App2 />` from inside my `App` Component. I can call it as many times as I want, and it will duplicate. It duplicates the entire Component, logic and all. I really recommend having a play with Components and using the Inspector to look at where the elements are rendering.
 
-I can now import both as `{ App, App2 }` on `main.jsx` and display both. Alternatively, I can call the `<App2 />` from inside my App Component, and return the export/import to the original state. App2 is now nested inside App. I really recommend having a play with Components and using the Inspector to look at where the elements are rendering.
+In React, we separate Components into separate files. In order to access variables across different files, we **export** them from one place, then **import** them into another. We typically only put one Component per file, this is so you can default export the single variable, and it keeps your code organised. If you create a folder for `Components`, you can keep them all together. Feel free to create sub-folders to group related Components together, but be aware your imports will need to be updated if you change where a file is located.
 
 ### Strict Mode
 
@@ -64,7 +64,7 @@ A **ternary operator** can function like shortened syntax for an **if... else...
 
 ### Looping
 
-Since you can escape into JavaScript within the JSX, you can also utilize loops like `.map()` and `.forEach()`. When you're generating many copies of the same element/Component, however, React wants to be able to keep track of them so it requires the **outermost returned element** to have a `key` property. This key **must** be unique on the **page**. If you're only looping once on the page, you know you're safe to use the **index** of each element in the array you're looping over. If you have multiple loops however, then those index values will no longer be unique. Don't forget that looping inside a Component being rendered on that page will also count! If the data items have some unique ID property, this is the best scenario. Otherwise, you can use some **string concatenation**/**template literals** to create your own unique key. 
+Since you can escape into JavaScript within the JSX, you can also utilize loops like `.map()`. When you're generating many copies of the same element/Component, however, React wants to be able to keep track of them so it requires the **outermost returned element** to have a `key` property. This key **must** be unique on the **page**. If you're only looping once on the page, you know you're safe to use the **index** of each element in the array you're looping over. If you have multiple loops however, then those index values will no longer be unique. Don't forget that looping inside a Component being rendered on that page will also count! If the data items have some unique ID property, this is the best scenario. Otherwise, you can use some **string concatenation**/**template literals** to create your own unique key. 
 
 ### Props
 
@@ -72,4 +72,14 @@ Since you can escape into JavaScript within the JSX, you can also utilize loops 
 
 We can add other properties to the props object by putting them as properties in the opening tag of the Component. You can pass any JavaScript variable as props, including expressions and functions. You're essentially creating the key/value pair to add to the props object when you add a prop to pass into a Component. A shortcut way of accessing the props values is to **destructure** the object.
 
-The reason I like to demonstrate this in a single file is hopefully to help you understand why passing data **downstream** works, but passing data back **upstream** doesn't. You have to think carefully about the structure of your project to make sure all Components that need certain data are able to access it. Later, we'll learn some different ways to pass data that sidestep this limitation, but for this exercise concentrate on where data is coming from, where you're using it, and how it's being passed from A to B. 
+```jsx
+<MyComponent name={"Emily"} hometown={"Bluehaven"} />
+
+// props object will look like: 
+const props = {
+  name: "Emily",
+  hometown: "Bluehaven"
+}
+```
+
+I like to demonstrate this in a single file to hopefully help you understand why passing data **downstream** works, but passing data back **upstream** doesn't. You have to think carefully about the structure of your project to make sure all Components that need certain data are able to access it. Later, we'll learn some different ways to pass data that sidestep this limitation, but for this exercise concentrate on where data is coming from, where you're using it, and how it's being passed from A to B. 
