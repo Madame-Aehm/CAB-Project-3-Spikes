@@ -25,3 +25,7 @@ If you would like to use a CSS library, they will usually have an npm package th
 Alternatively, a library called [**Styled Components**](https://styled-components.com/) exists that let's you write CSS within your Component using template literals. This works very well [together](https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app) with [Material UI](https://mui.com/) CSS Library. 
 
 ## Layout Components
+
+A Layout is just a regular Functional Component that can be wrapped around a page-level Component. One default property on a Component's `props` object is **children**, which refers to any content _between_ the Component's opening and closing tags. We've only been using self-closing Components up until now, but we can test passing data down through the `props.children`. For a layout Component, the `props.children` will be the page content of the page being wrapped by the layout. You can then build around it - relevant components, spacing, positioning, styling etc.
+
+---> `rules: {'react/prop-types': "off"}` (disable prop-types until we cover Typescript)

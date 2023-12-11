@@ -4,15 +4,15 @@
 
 Adding Typescript to an existing project can be tricky. Read about the steps [here](https://marketsplash.com/tutorials/typescript/how-to-add-typescript-to-existing-react-project/). It's much easier to just use one of the boilerplate scripts to create a new project already configured for Typescript. This can be achieved by adding `--ts` or `--typescript` when running the `create-react-app` script, or by selecting Typescript from the prompts when creating a project with **Vite** or **Next.js**. These projects will now include a package of pre-made Types specific to the framework. 
 
-The most important things to assign explicit Types to are the variables that will be passed around: **Props**, **State**, **Context**, and **functional Parameters and Returns** (specifically **event handlers**, **utility functions**, and **custom Hooks**).
+The most important things to assign explicit Types to are the variables that will be passed around: **Props**, **State**, **Context**, and **function Parameters and Returns** (including **event handlers**, **utility functions**, and **custom Hooks**).
 
 ## Definition files
 
-We can create **definition files** to store all the custom definitions using `.d` in the filename. In React we can add a folder named `@types` in the src folder of our app and a file named `index.d.ts`. This file will centralize all the Types and interfaces that we create and can be accessed by all components without needing to manually export and import. At this stage, however, it's not a bad idea to still manually export/import the Types, so you can definitely see where the they're coming from and follow up any errors.
+If we only use a Type or Interface once, declaring it in the Component that uses it is fine. But if we want to use the same Type across many Components, we can store them in a file in **definition files**. Create a `@types` folder in the src, and a file named inside called `index.ts`. If you have many Types, you can create more files to keep them organised. Each Type/Interface will need to be `exported` so that it can then be `imported` and used across the app. 
 
 ```ts
-type Zodiac = "Aquarius" | "Pisces" | "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn";
-interface User {
+export type Zodiac = "Aquarius" | "Pisces" | "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn";
+export interface User {
   username: string
   star_sign: Zodiac
 }
@@ -98,7 +98,7 @@ The easiest way to properly Type your events is to have the entire function inli
 }} />
 ```
 
-However, if you're importing a function, or simply prefer to define a handler outside the element, then you'll need to explicitly Type the Event. The Event Type will need to be imported from the 'react' package - some will also need to be passed a Generics addition of the HTML element type using it. [This page](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events) has a good list of event Types with a description of when to use them.
+However, if you're importing a function, or simply prefer to define a handler outside the element, then you'll need to explicitly Type the Event. The Event Type will need to be imported from the 'react' package - some will also need to be passed a Generics addition of the HTML element type using it. [This page](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events) has a good list of event Types with a description of when to use them. A trick is to first send the event through the parameters of an inline anonymous function, then you can hover and copy/paste the inferred Type! 
 
 ```ts
 const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +106,7 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 }
 ```
 
-For some asynchronous functions, it is sometimes necessary to add a `.catch()` block in the event callback. This is less helpful for us, though, as we're now not using Typescript to help control our own code, but instead trying to make it work together with something else. 
+For some asynchronous functions, it is sometimes necessary to add a `.catch()` block in the event callback. 
 
 ### Automatic type inferring & any
 

@@ -49,8 +49,6 @@ function App() {
 }
 ```
 
-This looks a bit different to how we would do it with Vanilla JavaScript. With Vanilla, we would be able to use a method like `.getElementById()` to target the input element itself in the `click` event. That's not going to work here, because the element isn't even created until the return of the function, so I've had to create a second variable to hold the input value. It starts as just an empty string, but then for every change made to the input value, my `newName` is reinitialized.
-
 What I want to happen is for the variable `myName` to be reinitialized with the same value as `newName`, and then for me to _see_ the change in the DOM. We can see in the console that the value of the variable is updating, but the DOM stays the same. This is because React doesn't re-render for a regular variable change. Remember how much work that was in Vanilla JS? To remove the existing value, then add new ones? It isn't going to do all of that unless it knows it needs to. 
 
 It knows it needs to do this for state changes. To create a state variable, we will use the `useState()` React Hook (we'll cover Hooks in another spike). This will need to be **imported** from 'react' into every file you want to use it. 
@@ -81,7 +79,7 @@ Instead of **reinitializing** a `let` variable, I can now use the state setter f
   }
 ```
 
-Notice though, that even though the DOM updates correctly, now our console logs are wrong! This takes some practise to understand, but it's crucial to using React: **state values update on the next render**. If you are trying to apply some other JavaScript functionality to the state value, it will still be applying to the old value, not the new. 
+Changing state triggers a Component to **rerender**. Think of this as the function being called again, so all the code inside will be run again. The state variable's value is updated on the new render. Notice how even though the DOM updates correctly, now our console logs are wrong. This is because the console logged that value _before_ the page rerendered, so you're still seeing the old value, not the new. 
 
 We can use an `<input />` with an `onChange` event, together with some console logs to demonstrate this. Every time I make a change in the input, I'll update the value state, which triggers a re-render. 
 
@@ -92,13 +90,15 @@ We can use an `<input />` with an `onChange` event, together with some console l
   }}/>
 ```
 
+It's good practise to link the value of an input to a state variable to create what is known an a [**controlled input**](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable). You can then very easily clear the input by using the setState function to set the value back to an empty string. 
+
 ## React Effects
 
 Sometimes we want to trigger some functionality not based on a user interaction, but because something else on the page has updated, or as the component is mounted/unmounted. For this, we can use React's [`useEffect()` hook](https://react.dev/reference/react/useEffect). This takes a **callback**, and then an optional **dependency array**.
 
 The callback is essentially the "effect" taking place. The default behaviour of `useEffect()` with no dependency array is to trigger the callback function on _every_ render of the component, including the first. We can use console logs to see how it runs every single time we update _any_ state. 
 
-It's more likely though, that you're either going to want the `useEffect()` to only run once, or to run only when _specific_ states are updated. We use our dependency array to communicate this. An empty array means the effect will run on the **first** render only. If you want your effect to run when a specific state updates, put that state into the array. The Hook will compare the value of the variable/s between renders - if _any_ of them are different, it will run the effect.
+If that's the behaviour we wanted though, we could just put our console log anywhere in the function. It's more likely that you're either going to want the `useEffect()` to only run once, or to run only when _specific_ states are updated. We use our dependency array to communicate this. An empty array means the effect will run on the **first** render only. If you want your effect to run when a specific state updates, put that state into the array. The Hook will compare the value of the variable/s between renders - if _any_ of them are different, it will run the effect.
 
 ```ts
 useEffect(() => console.log("I run on every render!"));
@@ -110,7 +110,7 @@ useEffect(() => console.log("I run on the first render, and again any time the u
 
 Think about what you're trying to achieve when you implement `useEffect()`. According to the React [docs](https://react.dev/learn/you-might-not-need-an-effect), "If you’re not trying to synchronize with some external system, you probably don’t need an Effect."
 
-Our most common use-case will be to make fetch requests when the page loads, and to re-fetch data based on some user interaction. We would then have a state variable waiting to be updated with the result from our fetch. It's very important to remember the dependency array when updating state from a `useEffect()` - otherwise you'll find yourself in an infinite loop! The state change triggers a re-render, which triggers the `useEffect()`, which updates the state, which triggers a re-render...........
+_Our_ most common use-case will be to make fetch requests when the page loads, and to re-fetch data based on some user interaction. We would then have a state variable waiting to be updated with the result from our fetch. It's very important to remember the dependency array when updating state from a `useEffect()` - otherwise you'll find yourself in an infinite loop! The state change triggers a re-render, which triggers the `useEffect()`, which updates the state, which triggers a re-render...........
 
 ```ts
   useEffect(() => {
