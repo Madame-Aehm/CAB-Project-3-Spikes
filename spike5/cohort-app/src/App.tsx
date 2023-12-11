@@ -37,7 +37,7 @@ function App() {
 
   return (
     <>
-      <h1 className={style.red}>Hello</h1>
+      <h1 className={`${style.red} ${style.mb}`}>Hello</h1>
       <form >
         <input value={inputValue} type='text' onChange={(e) => setInputValue(e.target.value)} />
         <button type='submit' onClick={(e) => void handleSubmit(e)}>submit</button>
