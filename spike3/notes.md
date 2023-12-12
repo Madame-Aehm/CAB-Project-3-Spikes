@@ -92,13 +92,15 @@ We can use an `<input />` with an `onChange` event, together with some console l
 
 It's good practise to link the value of an input to a state variable to create what is known an a [**controlled input**](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable). You can then very easily clear the input by using the setState function to set the value back to an empty string. 
 
+Sending your state variables and setter functions through to your lower level Components in their props is also how we can pass information back up through the chain. When you use the setState function in the lower Component, the value in the higher Component will update. 
+
 ## React Effects
 
 Sometimes we want to trigger some functionality not based on a user interaction, but because something else on the page has updated, or as the component is mounted/unmounted. For this, we can use React's [`useEffect()` hook](https://react.dev/reference/react/useEffect). This takes a **callback**, and then an optional **dependency array**.
 
-The callback is essentially the "effect" taking place. The default behaviour of `useEffect()` with no dependency array is to trigger the callback function on _every_ render of the component, including the first. We can use console logs to see how it runs every single time we update _any_ state. 
+The callback is essentially the "effect" taking place. The default behaviour of `useEffect()` with no dependency array is to trigger the callback function on _every_ render of the component, including the first. We can use console logs to see how it runs every single time we update _any_ state.
 
-If that's the behaviour we wanted though, we could just put our console log anywhere in the function. It's more likely that you're either going to want the `useEffect()` to only run once, or to run only when _specific_ states are updated. We use our dependency array to communicate this. An empty array means the effect will run on the **first** render only. If you want your effect to run when a specific state updates, put that state into the array. The Hook will compare the value of the variable/s between renders - if _any_ of them are different, it will run the effect.
+If that's the behaviour we wanted though, we could just put our console log anywhere in the global function. It's more likely that you're either going to want the `useEffect()` to only run once, or to run only when _specific_ states are updated. We use our dependency array to communicate this. An empty array means the effect will run on the **first** render only. If you want your effect to run when a specific state updates, put that state into the array. The Hook will compare the value of the variable/s between renders - if _any_ of them are different, it will run the effect.
 
 ```ts
 useEffect(() => console.log("I run on every render!"));
