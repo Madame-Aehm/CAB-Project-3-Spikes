@@ -8,7 +8,7 @@ The most important things to assign explicit Types to are the variables that wil
 
 ## Definition files
 
-If we only use a Type or Interface once, declaring it in the Component that uses it is fine. But if we want to use the same Type across many Components, we can store them in a file in **definition files**. Create a `@types` folder in the src, and a file named inside called `index.ts`. If you have many Types, you can create more files to keep them organised. Each Type/Interface will need to be `exported` so that it can then be `imported` and used across the app. 
+If we only use a Type or Interface once, declaring it in the Component that uses it is fine. But if we want to use the same Type across many Components, we can store them in a **definition file**. Create a `@types` folder in the src, and a file named inside called `index.ts`. If you have many Types, you can create more files to keep them organised. Each Type/Interface will need to be `exported` so that it can then be `imported` and used across the app. 
 
 ```ts
 export type Zodiac = "Aquarius" | "Pisces" | "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn";
@@ -111,6 +111,8 @@ For some asynchronous functions, it is sometimes necessary to add a `.catch()` b
 ### Automatic type inferring & any
 
 It is possible to bypass Type checking by simply using the `any` type. That allows you to opt out of Typescript, but also negates all of its benefits. It's also worth noting that typescript can provide automatic documentation for your code, as the editor will automatically pick up the Type definitions. Anybody using your code will get [Intellisense](https://code.visualstudio.com/docs/editor/intellisense) on the shape and purpose of your variables and functions, making it more efficient to work collaboratively without having to read or write documentation. Hover over code to view further details.
+
+If you're fetching data from an external source, you should create custom Types to handle what you expect to receive. You should check what your API sends back for both a successful and failed response, then use a **JSON to Typescript Converter** to help you create your custom Type! Always review what the converter returns, and test it on multiple end-points to catch any properties that could have a hidden Union Type! Some good converters can be found [here](https://jsonformatter.org/json-to-typescript), [here](https://transform.tools/json-to-typescript), and [here](https://quicktype.io/typescript).
 
 ## Understanding the types definitions
 
