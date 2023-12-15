@@ -56,7 +56,7 @@ The Provider exists as a property on my Context, so from the `main.tsx`, I can w
 </AuthContext.Provider>
 ```
 
-The problem here though is that I don't have any of the data I want to pass as the value. There's nowhere to write a function to check if a user is logged in, or to create a state to hold the result. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers separate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
+The problem here though is that I don't have any of the data I want to pass as the value. I would have to write all the logic linked to my user in this Component so that I can pass it down. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers separate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
 
 ```ts
 type Props = {
@@ -112,6 +112,17 @@ const defaultValue: AuthContextType = {
 ```
 
 A void function is a function that doesn't **return** anything. For the default value, I've had them throw an error that simply communicates there is no provider. If I were to forget my Provider, this error message will remind me to implement it. If your functions take parameters, remember to also include and type them in the interface. 
+
+**Important**: if you want to use functions linked to the react-router package in your Context (such as useNavigate), your Context needs to be _inside_ the Router. In this case, I find the best place to put it is as a Layout Wrapper around all your routes: 
+
+```ts
+const router = createBrowserRouter([
+  {
+    element: <AuthContextProvider><Outlet /></AuthContextProvider>,
+    children: [...all routes]
+  }
+])
+```
 
 ## Protected Route
 

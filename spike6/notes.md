@@ -2,13 +2,15 @@
 
 ## React Router
 
-[**React Router**](https://reactrouter.com/en/main/start/overview) is React's answer to "pages". React is a single page application, which means that it's really only a single `index.html` file which we then use JavaScript to fill dynamically. React Router lets you set "routes" that will render specific page components when that route is visited. 
+[**React Router**](https://reactrouter.com/en/main/start/overview) is React's answer to "pages". React is a single page application, which means that it's really only a single `index.html` file which we then use JavaScript to fill dynamically. React Router lets you set "routes" that will render specific page components when that route is visited. This is known as **client-side routing**. 
 
 React Router is an additional package that we have to install: 
 
 ```
 npm install react-router-dom
 ```
+
+We are installing `react-router-dom`, which holds all the functions and Components for routing within a web app. The full package `react-router` has both `react-router-dom` and `react-router-native`, which is for native apps. 
 
 ## Browser Router
 
