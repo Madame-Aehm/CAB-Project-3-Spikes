@@ -43,7 +43,7 @@ Now that we've defined a Router, we can assign it a **provider**. Import `Router
 )
 ```
 
-You can create as many routes as you need for each page you would like to have, so let's build a navigation bar. This will also be slightly different to your static projects, because in React an  `<a>` element causes a hard refresh on the page. We don't want that - it defeats the purpose of React's state management system! Luckily, React Router gives us some options. Let's create a folder in the `src` to hold our `components`, and create a file called `Navbar.tsx`. There are ways of Layouts to do this more efficiently, but for now I'm just going to manually import the `<Navbar />` into each page I want it to be displayed.
+You can create as many routes as you need for each page you would like to have, so let's build a navigation bar. This will also be slightly different to your static projects, because in React an  `<a>` element causes a hard refresh on the page. We don't want that - it defeats the purpose of React's state management system! Luckily, React Router gives us some options. Let's create a folder in the `src` to hold our `components`, and create a file called `Navbar.tsx`. There are ways of using Layouts to do this more efficiently, but for now I'm just going to manually import the `<Navbar />` into each page I want it to be displayed.
 
 ```tsx
 function NavBar() {
@@ -64,7 +64,7 @@ function NavBar() {
 }
 ```
 
-There is a pre-made `<Link>` component that we can import from "react-router-dom". This `<Link>` will accept a `to` props, which will be whichever of our paths we intend to link to.
+There is a pre-made `<Link>` component that we can import from "react-router-dom". This `<Link>` will accept a `to` props, which will be a string for whichever of our paths we intend to link to.
 
 ```js
 <Link to="/">Home</Link>

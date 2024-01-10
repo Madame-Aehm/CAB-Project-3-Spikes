@@ -92,7 +92,7 @@ const router = createBrowserRouter([
 
 Some of you may have used **URL parameters** in your last project. If you didn't, you very likely used parameters in one or more of the endpoints from your API. "Parameters" or "params" refer to dynamic values in the URL that the file being requested can then access. 
 
-On the `Characters.tsx` component, let's make a fetch request to the Rick and Morty API. I have used a combination of [QuickType](https://app.quicktype.io/) and the [Character Schema](https://rickandmortyapi.com/documentation/#character-schema) supplied by the API docs to create some types in my `index.d.ts` in the `@types` folder (I manually create these - Vite doesn't include them in the boilerplate). 
+On the `Characters.tsx` component, let's make a fetch request to the Rick and Morty API. I have used a combination of [QuickType](https://app.quicktype.io/) and the [Character Schema](https://rickandmortyapi.com/documentation/#character-schema) supplied by the API docs to create some types in my `index.ts` in the `@types` folder (I manually create these - Vite doesn't include them in the boilerplate). 
 
 We can then make a small card component to display each character, like what we did for the practice challenge. But instead of opening a model, I'm going to link to a new page. This page will be a single component, but it will receive the character ID through the params. With that ID, the page will be able to make a fresh fetch request to the API for that specific character.
 
@@ -129,7 +129,17 @@ The newest version of React Router offers us some additional APIs to use with ou
 },
 ```
 
-To access the return of this function, we use the `useLoaderData()` Hook on the component. If we comment out our useEffect and log the Hook result to the console, we can see it's the same fetch response we would normally receive. We can now handle that data how we want. I will still always check for errors, and I will still need to set the types of my response data. 
+To access the return of this function, we use the `useLoaderData()` Hook on the component. If we comment out our useEffect and log the Hook result to the console, we can see it's the same fetch response we would normally receive. We can now handle that data how we want. I will still always check for errors, and I will still need to set the types of my response data. You can access the parameters of a dynamic route through the parameters of the function:
+
+```tsx
+{
+  path: "/character/:id",
+  element: <Character />,
+  loader:async ({ params }) => {
+    return fetch(`https://rickandmortyapi.com/api/character/${params.id}`);
+  }
+},
+```
 
 ```tsx
 const loaderData = useLoaderData() as RickMorty;
