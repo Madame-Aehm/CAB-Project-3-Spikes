@@ -2,7 +2,7 @@
 
 ## Custom Hooks
 
-We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally adviced to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
+We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally advised to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
 
 Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevant `useState` variables (data, loading, error).
 

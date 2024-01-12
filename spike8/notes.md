@@ -42,7 +42,7 @@ const defaultValue: AuthContextType = {
 export const AuthContext = createContext(defaultValue);
 ```
 
-We now have a very simple Context. Let's test it first without creating a Provider. To access anything on your Context, you need to use the `useContext()` hook, and pass it the Context variable you exported. If I do this in any Component and log it to the console, I should see my default object values.
+We now have a very simple Context. Let's test it first without creating a Provider. To access anything on your Context, you need to use the `useContext()` [hook](https://react.dev/reference/react/useContext), and pass it the Context variable you exported. If I do this in any Component and log it to the console, I should see my default object values.
 
 ```tsx
 const contextValues = useContext(AuthContext);
