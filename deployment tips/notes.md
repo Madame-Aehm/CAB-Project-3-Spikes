@@ -136,6 +136,8 @@ They've just forgotten to also include that you will also need to also add a `ho
 }
 ```
 
+You will also need to replace your **Browser Router** with a **Hash Router**. They are functionally almost identical, so nothing else will need to change, just replace `createBrowserRouter()` with `createHashRouter`. This is just to retain the SPA functionality with GitHub Pages, if you deploy your app in any other way, you should keep the Browser Router and use a `_redirects` file. 
+
 ## Deploy with Netlify/Render/Vercel
 
 **Netlify** should accept a React App created with Vite and deploy it without issue. A React App created with `create-react-app` can sometimes fail the build because of warnings from the outdated packages. If there is a problem, try changing the **Build command** under the **Build & Deploy** settings to `CI=false npm run build`. 
