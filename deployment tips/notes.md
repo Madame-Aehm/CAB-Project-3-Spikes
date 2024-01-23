@@ -116,13 +116,13 @@ You will need to give a path to your repo which will look like YourGitHubUsernam
 
 You'll also need to specify which branch you would like to deploy. If you're happy to use the `main` branch, just click <kbd>enter</kbd>. 
 
-Finally, if you've still got the `dist` folder, you might be asked whether Firebase should overwrite this when it runs `ci install && npm run build`. Yes, we want that! It will keep the deployment build folder as fresh as possible. Now deploy by running: 
+Finally, if you've still got the `dist` folder, you might be asked whether Firebase should overwrite this when it runs `ci install && npm run build`. **No, we don't want that!** Now deploy by running: 
 
 ```
 firebase deploy
 ```
 
-Commit and push all changes to GitHub. It will sometimes take a few minutes for the live version to build and deploy, but you should now be able to visit your console on Firebase, and under Hosting, visit your app from one of the default domains. 
+Commit and push all changes to GitHub. It will sometimes take a few minutes for the live version to build and deploy, but you should now be able to visit your console on Firebase and then under Hosting, visit your app from one of the default domains. 
 
 ## Deploy with GitHub Pages
 
