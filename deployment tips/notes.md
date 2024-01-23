@@ -136,15 +136,23 @@ They've just forgotten to also include that you will also need to also add a `ho
 }
 ```
 
-You will also need to replace your **Browser Router** with a **Hash Router**. They are functionally almost identical, so nothing else will need to change, just replace `createBrowserRouter()` with `createHashRouter`. This is just to retain the SPA functionality with GitHub Pages, if you deploy your app in any other way, you should keep the Browser Router and use a `_redirects` file. 
+You will also need to replace your **Browser Router** with a **Hash Router**. They are functionally almost identical, so nothing else will need to change, just replace `createBrowserRouter()` with `createHashRouter`. This is just to retain the SPA functionality with GitHub Pages, if you deploy your app in any other way, you should keep the Browser Router. 
 
-## Deploy with Netlify/Render/Vercel
+## Deploy with Netlify
 
-**Netlify** should accept a React App created with Vite and deploy it without issue. A React App created with `create-react-app` can sometimes fail the build because of warnings from the outdated packages. If there is a problem, try changing the **Build command** under the **Build & Deploy** settings to `CI=false npm run build`. 
+From your Overview, you can click **Add new site** and **Import an existing project**. We want to **Deploy with GitHub** (if you haven't already authorized Netlify to access your GitHub, you will be prompted to do so now). Select your repository. You'll then need to review the configuration.
+
+Select your **branch**, and if your project is in a sub-folder on your repo, you will have to add that sub-folder as the **base directory**. Our **build command** will be `npm run build`. 
+
+**Note:** A React App created with `create-react-app` can sometimes fail the build because of warnings from the outdated packages. If there is a problem, try changing the **Build command** under the **Build & Deploy** settings to `CI=false npm run build`. Normally, a warning would be enough to cause the build to fail, but CRA uses so many outdated packages, it's impossible to resolve all warnings. This script tells Netlify to ignore those warnings and build anyway. 
+
+The **publish directory** will be the name of the folder created when you run `npm run build`. For Vite projects, this is `dist`, for CRA it is `build`.
+
+You will also need to add all your **environment variables**.
 
 When deploying a single page application that utilizes React Router, an extra step needs to be taken to insure the hosting service knows what to do when you refresh on a page other than the landing page. The usual behaviour of a website when you refresh, is to check the URL and then make a request for the `.html` file that should be hosted at that path. However, for a single page application built with a framework like React, there is only **one** `.html` file, so we need to tell the hosting service to always go to the `index.html`, then JavaScript will do the rest! 
 
-To do this we can create a `_redirects` file. We will put this in our `public` folder, since we want it to always be open for our hosting service to easily access and read. Inside the `_redirects` file, paste:
+On Netlify, we can create a `_redirects` file. We will put this in our `public` folder, since we want it to always be open for our hosting service to easily access and read. Inside the `_redirects` file, paste:
 
 ```
 /*  /index.html  200
@@ -152,4 +160,30 @@ To do this we can create a `_redirects` file. We will put this in our `public` f
 
 `/*` represents every URL - you're telling it on any URL path, redirect to `/index.html` and send a positive `200` status. This should apply for all hosting platforms. 
 
-If you would prefer to configure more specifically, you can create a `vercel.json` and/or a `netlify.toml` to configure rewrite rules for each hosting service, or add [rewrite rules](https://render.com/docs/redirects-rewrites) from the **Redirects/Rewrites** dashboard on Render. (Render all does a nice job of defining the difference between a **rewrite** and a **redirect**).
+## Deploy with Vercel
+
+From your Dashboard Overview, click **Add New...** and select **Project**. **Import** your repository, then review the configuration. You can rename your project, and check the correct framework has been identified. If your project is in a sub-folder on your repo, you will have to add that sub-folder as the **root directory**. The build settings should be automatically configured to match your framework, but you will still need to manually add your **environment variables**. 
+
+When deploying a single page application that utilizes React Router, an extra step needs to be taken to insure the hosting service knows what to do when you refresh on a page other than the landing page. The usual behaviour of a website when you refresh, is to check the URL and then make a request for the `.html` file that should be hosted at that path. However, for a single page application built with a framework like React, there is only **one** `.html` file, so we need to tell the hosting service to always go to the `index.html`, then JavaScript will do the rest!
+
+On Vercel, we can create a `vercel.json`, this will be in the root folder. Inside, paste:
+
+```json
+{
+  "routes": [{
+    "src": "/[^.]+",
+    "dest": "/",
+    "status": 200
+  }]
+}
+```
+
+## Deploy with Render
+
+On your dashboard, click **New +** and select **Static Site**. **Connect** your repository, then review the configuration.
+
+You will need to choose a **name** for your project, select the **branch** to be deployed, and if your project is in a sub-folder on your repo, you will have to add that sub-folder as the **Root Directory**. The **Publish Directory** will be the name of the folder created when you run `npm run build`. For Vite projects, this is `dist`, for CRA it is `build`. Add your **environment variables**. 
+
+When deploying a single page application that utilizes React Router, an extra step needs to be taken to insure the hosting service knows what to do when you refresh on a page other than the landing page. The usual behaviour of a website when you refresh, is to check the URL and then make a request for the `.html` file that should be hosted at that path. However, for a single page application built with a framework like React, there is only **one** `.html` file, so we need to tell the hosting service to always go to the `index.html`, then JavaScript will do the rest!
+
+On Render, you can do this under **Redirects/Rewrites**. We have to write a [rule](https://docs.render.com/deploy-create-react-app#using-client-side-routing) for Client-Side Routing. They have some good [documentation](https://render.com/docs/redirects-rewrites) on how to define these rules. We are just going to add one **Rewrite**, where the **Source** will be `/*` and the **Destination** will be `/index.html`. 
