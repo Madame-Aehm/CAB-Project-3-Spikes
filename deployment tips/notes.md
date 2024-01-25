@@ -160,6 +160,8 @@ On Netlify, we can create a `_redirects` file. We will put this in our `public` 
 
 `/*` represents every URL - you're telling it on any URL path, redirect to `/index.html` and send a positive `200` status. This should apply for all hosting platforms. 
 
+Netlify will generate a random name which will be used as your URL. If you wish to customize this, you can do this in **Site Configuration**, under **General Site Settings**. 
+
 ## Deploy with Vercel
 
 From your Dashboard Overview, click **Add New...** and select **Project**. **Import** your repository, then review the configuration. You can rename your project, and check the correct framework has been identified. If your project is in a sub-folder on your repo, you will have to add that sub-folder as the **root directory**. The build settings should be automatically configured to match your framework, but you will still need to manually add your **environment variables**. 
