@@ -64,7 +64,7 @@ myNum = 69; // this is fine
 myNum = "This is a string"; // this will cause an error
 ```
 
-If we don't **explicitly** assign a Type when we declare a variable, the Type will be **inferred** and assigned automatically based on the Type of the value. In VSCode, you can hover your mouse over any variable to see the Type. If your variable Type is flexible, you can declare what's called a **Union Type**, separate each relevant Type with a **|** symbol (note that in Typescript, you only need **one** **|** symbol to represent an **Or Operator**):
+If we don't **explicitly** assign a Type when we declare a variable, the Type will be **inferred** and assigned automatically based on the Type of the value. In VSCode, you can hover your mouse over any variable to see the Type. If your variable Type is flexible, you can declare what's called a **Union Type**, separate each relevant Type with a **|** symbol. Note that in Typescript, you only need **one** **|** symbol to represent an **Or Operator**:
 
 ```ts
 let myVariable: string | number = "This is a string"; // this is ok
@@ -92,7 +92,9 @@ myMentor = "Jost"; // this will cause an error
 
 The Types for `string`, `number` and `boolean` are known as [**Primitive Types**](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html). Types also exist for `undefined` and `null`.
 
-**Arrays** are declared by using **square brackets [ ]**. Declaring a variable as an empty array creates an inferred type of `any[]`. This means your array will accept any value. If you want to limit your array to accepting only a single Type, declare it as `Type[]`. There is also a special Array Type known as a [**Tuple**](https://www.tutorialsteacher.com/typescript/typescript-tuple) which will accept only a defined number of elements, which must conform to Types defined for them. The use-cases for this are fairly limited, however. 
+**Arrays** are declared by using **square brackets [ ]**. Declaring a variable as an empty array creates an inferred type of `never[]`. This can seem inconvenient at first, since it means that Typescript is assuming the array will always stay empty if it is created empty. You will need to tell Typescript the Type of the elements that will be held by your array using `Type[]`. 
+
+There is also a special Array Type known as a [**Tuple**](https://www.tutorialsteacher.com/typescript/typescript-tuple) which will accept a defined number of elements in a variety of Types, which must conform to the defined array order. The use-cases for this are fairly limited, however. 
 
 ```ts
 const array1 = [];
@@ -105,11 +107,11 @@ array2.push(42); // this will cause an error
 
 ## Interfaces
 
-If you want to apply a strict Type to an `object`, it's best to use an **Interface**. This will let you define the **shape** of your object. The definition I found most helpful to understand why an Interface is preferable to a Type for an `object` is:  
+If you want to apply a strict Type to an `object`, you can use either a regular Type, or an **Interface**. Either will let you define the **shape** of your object. The definition I found most helpful to understand why an Interface differs from a Type for an `object` is:  
 
-_"Type aliases and interfaces are very similar, and in many cases you can choose between them freely. Almost all features of an interface are available in type , the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable."_
+_"Type aliases and interfaces are very similar, and in many cases you can choose between them freely. Almost all features of an interface are available in type, the key distinction is that a type cannot be re-opened to add new properties vs an interface which is always extendable."_
 
-Types and Interfaces can also be nested to make for some very specific variable control. If any properties are missing or mis-typed, Typescript will complain. This will prevent the _very_ common React error "could not read property of undefined":
+Types and Interfaces can also be nested to make for some very specific variable control. If any properties are missing or mis-typed, Typescript will complain. This will prevent the _very_ common error "could not read property of undefined":
 
 ```ts
 type Animal = "cat" | "dog"
@@ -170,3 +172,9 @@ const dog1 = {
   desexed: true
 }
 ```
+
+Some suggested resources for practise: 
+  - [https://typescript-exercises.github.io/](https://typescript-exercises.github.io/)
+  - [https://www.w3schools.com/typescript/typescript_exercises.php](https://www.w3schools.com/typescript/typescript_exercises.php)
+  - [https://exercism.org/tracks/typescript/exercises](https://exercism.org/tracks/typescript/exercises)
+  - [https://www.totaltypescript.com/tutorials/beginners-typescript](https://www.totaltypescript.com/tutorials/beginners-typescript)
