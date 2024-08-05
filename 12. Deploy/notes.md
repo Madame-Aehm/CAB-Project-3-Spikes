@@ -28,7 +28,7 @@ The first match is always `match /databases/{database}/documents`. This refers t
 
 **read** requests refer to requests to **get** data, but not change it in any way. It can be further broken down into **get** (single document) and **list** (multiple documents). **write** refers to requests to alter documents in some way. It can be further broken down into **create**, **update** and **delete**. See more about [basic](https://firebase.google.com/docs/firestore/security/rules-structure#basic_readwrite_rules) and [granular](https://firebase.google.com/docs/firestore/security/rules-structure#granular_operations) operations. 
 
-My app uses two collections: one for "comments" and one for "favourites". 
+My app uses one collection: "comments". 
 
 My comments collection is open to be **read** by anybody. I first need to [match](https://firebase.google.com/docs/firestore/security/get-started#writing_rules) the path of my collection, then I can allow **read** with no conditions:
 
@@ -58,13 +58,13 @@ I only want to allow users to **create** comments, so I'm going to have to use a
   }
 ```
 
-For my favourites collection, I want to set both read and write Rules to restrict access to only the user the document belongs to. When a new user signs up to my app, in the same step I also create for them a document in the "favourites" collection. I give this document the same name/ID as the user's UID. This will make my comparisons very simple, once I've matched to the right path:
+<!-- For my favourites collection, I want to set both read and write Rules to restrict access to only the user the document belongs to. When a new user signs up to my app, in the same step I also create for them a document in the "favourites" collection. I give this document the same name/ID as the user's UID. This will make my comparisons very simple, once I've matched to the right path:
 
 ```
 match /favourites/{userId} {
   allow read, write: if request.auth.uid == userId;
 }
-```
+``` -->
 
 Consider how your users are interacting with your data, and write some rules to prevent accidental (or malicious!) undesirable requests from getting through.
 
@@ -189,3 +189,28 @@ You will need to choose a **name** for your project, select the **branch** to be
 When deploying a single page application that utilizes React Router, an extra step needs to be taken to insure the hosting service knows what to do when you refresh on a page other than the landing page. The usual behaviour of a website when you refresh, is to check the URL and then make a request for the `.html` file that should be hosted at that path. However, for a single page application built with a framework like React, there is only **one** `.html` file, so we need to tell the hosting service to always go to the `index.html`, then JavaScript will do the rest!
 
 On Render, you can do this under **Redirects/Rewrites**. We have to write a [rule](https://docs.render.com/deploy-create-react-app#using-client-side-routing) for Client-Side Routing. They have some good [documentation](https://render.com/docs/redirects-rewrites) on how to define these rules. We are just going to add one **Rewrite**, where the **Source** will be `/*` and the **Destination** will be `/index.html`. 
+
+
+
+
+
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // This rule allows anyone with your Firestore database reference to view, edit,
+    // and delete all data in your Firestore database. It is useful for getting
+    // started, but it is configured to expire after 30 days because it
+    // leaves your app open to attackers. At that time, all client
+    // requests to your Firestore database will be denied.
+    //
+    // Make sure to write security rules for your app before that time, or else
+    // all client requests to your Firestore database will be denied until you Update
+    // your rules
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(3024, 8, 30);
+    }
+  }
+}

@@ -2,9 +2,9 @@
 
 ## Custom Hooks
 
-We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. It's generally advised to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
+We've already been using **Hooks** written by React: `useState`, `useEffect`, `useContext`, etc. We can also [write our own](https://react.dev/learn/reusing-logic-with-custom-hooks) Hooks! Building our own Hooks lets us extract component logic into reusable functions. Hooks differ from regular JavaScript utility functions - a Hook is basically a React Component, but it returns data rather than jsx. It's generally advised to name your Hook with 'use', so that you remember that the [rules of Hooks](https://reactjs.org/docs/hooks-rules.html) apply. 
 
-Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put the focus in your component to what your intent for the code is, rather than how you implement it. A very common example is a `fetch` and relevant `useState` variables (data, loading, error).
+Custom Hooks are great to prevent duplicating logic, but they can be overkill for simple code. The React Docs recommend looking at when you're using `useEffect`, and consider whether wrapping that logic in a Custom Hook could help put focus on the _intent_ of the code, rather than _implementation_ it. Meaning, give your Hook a clear name, and anyone looking at your code can understand what it is doing without needing to look inside. A very common example is a `fetch`, with the relevant `useState` variables (data, loading, error).
 
 ```jsx
 const useFetch = (url) => {
@@ -39,15 +39,15 @@ const useFetch = (url) => {
 export default useFetch
 ```
 
-To use the Hook, I import it and call it like a function. The return can be destructured to create 3 variables, instead of 1 object with 3 properties.
+To use the Hook, I import it and call it like a function. I can send parameters to customize the functionality the same as with any JavaScript function. Here, I will pass a string to tell the fetch where to find the data. I could also send a default value for the state. The return is an object with the values of the three states. When I want to call by Hook, I can catch the return values in a variable like normal:
 
 ```jsx
 const { data, error, loading } = useFetch("....whateverUrl");
 ```
 
-Custom Hooks with [typescript](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi), however, can be tricky. We want them to be flexible, but that means having flexible types. Each URL will return something completely different: an array of many characters, or an object for a single character, etc. This is a good place to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
+Custom Hooks with [typescript](https://dev.to/sulistef/how-to-create-a-custom-react-hook-to-fetch-an-api-using-typescript-ioi) can be tricky. We want them to be flexible, but that means having flexible types. Each URL will return something completely different: an array of many characters, or an object for a single character, etc. This is a good place to introduce the concept of [**Generics**](https://www.typescriptlang.org/docs/handbook/2/generics.html). This is where we create a placeholder for a Type that will be passed down through props. 
 
-In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. You will often see it represented with `<T>`, but I want to make it really clear where we're using it. Think of this as like parameters when you write a function. When we actually _use_ the type, we'll have to feed it the actual type we want to be used in place of the generic placeholder. We'll know what type we expect the Hook to return based on which URL endpoint we're using.
+In the following example, `<Placeholder>` is an arbitrary name given to the "props" Type being passed down. You will often see it represented with `<T>`, but I want to make it really clear where we're using it. Think of this as like parameters when you write a function. When we actually _use_ the type, we'll have to feed it the actual type we want to be used in place of the generic placeholder. 
 
 I've created two interfaces for this Hook: one represents the return of the function, so the `data`, `loading` state, and `error` message. This is so that when you call it in your component, those variables will already be strictly typed. The data variable will need to be typed using generics. The second interface is what I know my API returns when something goes wrong. The catch block doesn't catch the error returned from the API, since that still counts as a successful response, so we have to handle this manually. 
 
