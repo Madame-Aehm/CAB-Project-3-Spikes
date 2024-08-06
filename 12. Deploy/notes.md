@@ -86,6 +86,8 @@ This folder should already be included in the `.gitignore` (Vite does this autom
 
 Since we used Firebase as a service to build this project, it makes sense that we deploy our project with [**Firebase Hosting!**](https://firebase.google.com/docs/hosting/quickstart) I used [this](https://medium.com/@rajdeepmallick999/vite-firebase-how-to-deploy-react-app-5e5090730147) article as a guide.
 
+**Note**: since Firebase Hosting is really only designed for static sites, there isn't anywhere to store values for the `.env` file. You'll have to put the config keys as strings directly. So long as security rules have been established, this is what Firebase intended. If you have any other variables that have to be stored in an `.env` file, you'll need to investigate Firebase [Cloud Functions](https://firebase.google.com/docs/functions/config-env?gen=2nd).
+
 You will first have to install the **Firebase CLI** (command line interface). We do this globally, so we can then run Firebase scripts from our terminal in any folder (mac users might have to precede script with `sudo`):
 
 ```
@@ -112,7 +114,7 @@ We then need to tell Firebase where to find our build folder. This is referring 
 
 We want to accept all prompts that suggest connecting this deployment to our GitHub. This will create a pipeline wherein whenever we push new changes to our deployment branch, Firebase will automatically redeploy with the most recent changes. 
 
-You will need to give a path to your repo which will look like YourGitHubUsername/RepositoryName. Easiest way is to go to GitHub, open the repo, and click the green **<> Code** button and copy the link to your repo. You then need to remove `https://github.com/` from the start and `.git` from the end, so you're only left with your username and the repo name. This will prevent you from making any typos!
+You will need to give a path to your repo which will look like YourGitHubUsername/RepositoryName. Easiest way is to go to GitHub, open the repo, and take it directly from the URL.
 
 You'll also need to specify which branch you would like to deploy. If you're happy to use the `main` branch, just click <kbd>enter</kbd>. 
 
@@ -189,28 +191,3 @@ You will need to choose a **name** for your project, select the **branch** to be
 When deploying a single page application that utilizes React Router, an extra step needs to be taken to insure the hosting service knows what to do when you refresh on a page other than the landing page. The usual behaviour of a website when you refresh, is to check the URL and then make a request for the `.html` file that should be hosted at that path. However, for a single page application built with a framework like React, there is only **one** `.html` file, so we need to tell the hosting service to always go to the `index.html`, then JavaScript will do the rest!
 
 On Render, you can do this under **Redirects/Rewrites**. We have to write a [rule](https://docs.render.com/deploy-create-react-app#using-client-side-routing) for Client-Side Routing. They have some good [documentation](https://render.com/docs/redirects-rewrites) on how to define these rules. We are just going to add one **Rewrite**, where the **Source** will be `/*` and the **Destination** will be `/index.html`. 
-
-
-
-
-
-
-rules_version = '2';
-
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(3024, 8, 30);
-    }
-  }
-}
