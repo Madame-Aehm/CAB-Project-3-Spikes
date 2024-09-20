@@ -1,4 +1,4 @@
-# Project 3: Spike 4
+# Project 3: Spike 3
 
 ## Styling in React
 

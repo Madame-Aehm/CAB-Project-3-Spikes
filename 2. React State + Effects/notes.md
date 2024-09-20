@@ -1,4 +1,4 @@
-# Project 3: Spike 3 
+# Project 3: Spike 2
 
 ## Events
 

@@ -1,4 +1,4 @@
-# Project 3: Spike 2
+# Project 3: Spike 1
 
 ## MPA, SPA & PWA
 
