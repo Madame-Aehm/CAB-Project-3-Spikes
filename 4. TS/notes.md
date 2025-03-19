@@ -85,7 +85,7 @@ myVariable = 42;
 You can be even more specific, and specify exactly which _values_ can be accepted. This is known as a **Literal Type**:
 
 ```ts
-type Mentor = "Raul" | "Lucas" | "Heron"
+type Mentor = "Raul" | "Lucas"
 let myMentor: Mentor = "Raul"; // this is fine
 myMentor = "Jost"; // this will cause an error
 ```
