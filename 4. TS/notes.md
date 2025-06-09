@@ -31,15 +31,12 @@ Create a `tsconfig.json` and paste:
 {
   "compilerOptions": {
     "target": "es6",
-    "watch": true,
     "lib": ["dom", "esnext"]
   }
 }
 ```
 
 - The `target` property refers to the JavaScript version to compile into (usually opt for slightly older for maximum browser compatibility).
-
-- If `watch` is set to `true` the transpiler will run automatically on every save, rather than you needing to manually run the script.
 
 - The `lib` property takes an array of additional high level libraries not included in default set of type definitions.
   - `dom` = window, document, etc. 
@@ -49,7 +46,7 @@ Read about more compiler options [here](https://www.typescriptlang.org/tsconfig)
 
 ## Strong Typing
 
-**Strongly typing** your variables will help us to enforce the type of our variables. This means we decide what Type our variable is going to be, and then Typescript will prevent us from accidentally changing it, or applying incompatible functionality. 
+**Strongly typing** your variables will help us to enforce the type of our variables. This means we decide what DataType our variable is going to be, and then Typescript will prevent us from accidentally changing it, or applying incompatible functionality. 
 
 To add a type to a variable on declaration, put a **colon** (**:**) after the name, then specify which Type (string, number, boolean, etc.):
 
@@ -73,7 +70,7 @@ myVariable = 42; // this is also ok
 
 ## Type Aliases
 
-If we find ourselves using the same combination of Types many times, we can create a **Type Alias** to hold that value. Think of it like a custom Type. We do this by using the declaration `type`, and then assigning a name (the Alias). It's not compulsory, but good practise is to give your Types capitalized Aliases to help differentiate Types from variables:
+If we find ourselves using the same combination of Types many times, we can create a **Type Alias** to hold that value. Think of it like a custom Type variable. We do this by using the declaration `type`, and then assigning a name (the Alias). It's not compulsory, but good practise is to give your Types capitalized Aliases to help differentiate Types from regular JavaScript variables:
 
 ```ts
 type StrNum = string | number
@@ -85,16 +82,16 @@ myVariable = 42;
 You can be even more specific, and specify exactly which _values_ can be accepted. This is known as a **Literal Type**:
 
 ```ts
-type Mentor = "Raul" | "Lucas" | "Heron"
+type Mentor = "Raul" | "Lucas" | "Emily"
 let myMentor: Mentor = "Raul"; // this is fine
 myMentor = "Jost"; // this will cause an error
 ```
 
 The Types for `string`, `number` and `boolean` are known as [**Primitive Types**](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html). Types also exist for `undefined` and `null`.
 
-**Arrays** are declared by using **square brackets [ ]**. Declaring a variable as an empty array creates an inferred type of `never[]`. This can seem inconvenient at first, since it means that Typescript is assuming the array will always stay empty if it is created empty. You will need to tell Typescript the Type of the elements that will be held by your array using `Type[]`. 
+**Arrays** are declared by using **square brackets [ ]**. Declaring a variable as an empty array creates an inferred type of `never[]`: Typescript is assuming the array will always stay empty if it is created empty. You will need to tell Typescript the Type of the elements that will be held by your array using `Type[]`. 
 
-There is also a special Array Type known as a [**Tuple**](https://www.tutorialsteacher.com/typescript/typescript-tuple) which will accept a defined number of elements in a variety of Types, which must conform to the defined array order. The use-cases for this are fairly limited, however. 
+There is also a special Array Type known as a [**Tuple**](https://www.tutorialsteacher.com/typescript/typescript-tuple) which will accept a defined number of elements in a variety of Types, which must conform to the defined array order. 
 
 ```ts
 const array1 = [];
