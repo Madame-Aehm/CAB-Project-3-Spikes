@@ -10,65 +10,47 @@ The most important things to assign explicit Types to are the variables that wil
 
 If we only use a Type or Interface once, declaring it in the Component that uses it is fine. But if we want to use the same Type across many Components, we can store them in a **definition file**. Create a `@types` folder in the src, and a file named inside called `index.ts`. If you have many Types, you can create more files to keep them organised. Each Type/Interface will need to be `exported` so that it can then be `imported` and used across the app. 
 
+Create some Types for the expected response for [Rick & Morty API](https://rickandmortyapi.com/documentation/):
+
 ```ts
-export type Zodiac = "Aquarius" | "Pisces" | "Aries" | "Taurus" | "Gemini" | "Cancer" | "Leo" | "Virgo" | "Libra" | "Scorpio" | "Sagittarius" | "Capricorn";
-export interface User {
-  username: string
-  star_sign: Zodiac
+export interface APIData {
+    info:    Info;
+    results: Character[];
+}
+
+export interface Info {
+    count: number;
+    pages: number;
+    next:  string | null;
+    prev:  string | null;
+}
+
+export interface Character {
+    id:       number;
+    name:     string;
+    status:   "Alive" | "Dead" | "unknown";
+    species:  string;
+    type:     string;
+    gender:   "Female" | "Male" | "Genderless" | "unknown";
+    origin:   Location;
+    location: Location;
+    image:    string;
+    episode:  string[];
+    url:      string;
+    created:  Date;
+}
+
+export interface Location {
+    name: string;
+    url:  string;
+}
+
+export type APIError = {
+    error: string
 }
 ```
 
-## Function components
-
-Let's create a new functional component called `Profile.tsx` - it will render information about a user. We will name the file extension `.tsx` to specify that it's a React Typescript file. You might see in older tutorials/documentation the type `React.FunctionComponent` or `FC`, but this is generally agreed to be redundant. 
-
-However, it will still be necessary to explicitly Type your Props. You can do this by creating a Type for whole props object:
-
-```ts
-type Props = {
-  user: User
-}
-const Profile = (props: Props) => <p>{ props.user.username } is a { props.user.star_sign }</p>;
-```
-
-Or by destructuring the Props and applying a Type to each property:
-
-```ts
-const Profile = ({ user }: { user: User }) => <p>{ user.username } is a { user.star_sign }</p>;
-```
-
-```ts
-function App() {
-  return (
-    <Profile user={{ username: "Emily", star_sign: "Cancer" }} />
-  )
-}
-```
-
-You can choose to annotate the return Type so an error is raised if you accidentally return some other Type than a JSX element:
-
-```ts
-const Profile = ({ user }: { user: User }): JSX.Element => <p>{ user.username } is a { user.star_sign }</p>;
-```
-
-TypeScript helps us make sure that the correct props are being passed between components. If we want to specify that a prop is optional we can declare it using the optional property "?". This means Typescript will remind us any time we attempt to use this variable that it could be `undefined`, so make sure to do some conditional rendering to prevent errors. 
-
-```ts
-type Props = {
-  user: User
-  optionalProperty?: string;
-}
-```
-```tsx
-const Profile = ({ user, optionalProperty }: Props): JSX.Element => {
-  return (
-    <>
-      <p>{ user.username } is a { user.star_sign }</p>
-      { optionalProperty && <p>{ optionalProperty }</p> }
-    </>
-  )
-};
-```
+If you are creating types from a large JSON object, you can search for a JSON to TypeScript converter! Just be aware that you will most likely need to adapt what it produces.
 
 ## States
 
@@ -87,6 +69,70 @@ const [catName, setCatName] = useState<string | number>("coolcat420");
 ```
 
 This is commonly used if your state is initialized as `null`. (Note that `null` and `undefined` are different Types.)
+
+Define a state to hold the array of Characters from the API:
+
+```tsx
+const [characters, setCharacters] = useState<Character[]>([])
+```
+
+## Function components
+
+Let's create a new functional component for `CharacterCard.tsx`. We will name the file extension `.tsx` to specify that it's a React Typescript file. You might see in older tutorials/documentation the type `React.FunctionComponent` or `FC`, but this is generally agreed to be redundant. 
+
+However, it will still be necessary to explicitly Type your Props. You can do this by creating a Type for whole props object:
+
+```ts
+type Props = {
+    character: Character
+}
+
+function CharacterCard({ character }: Props) {
+  return (
+    <div style={{ border: "solid white 1px", padding: "1em" }}>
+        <h3>{character.name}</h3>
+        <img src={character.image} alt={`An image of ${character.name}`} />
+    </div>
+  )
+}
+```
+
+Or by destructuring the Props and applying a Type to each property:
+
+```ts
+function CharacterCard({ character }: { character: Character }) {
+  // ...
+}
+```
+
+```ts
+<div style={{ display: "flex", flexWrap: "wrap", border: "solid white 1px", gap: "1em", padding: "1em", justifyContent: "space-evenly" }}>
+  {characters.map(ch => <CharacterCard character={ch} />)}
+</div>
+```
+
+You can choose to annotate the return Type so an error is raised if you accidentally return some other Type than a JSX element:
+
+```ts
+const Example = ({ example }: { example: "value" }): JSX.Element => <p>{example}</p>;
+```
+
+TypeScript helps us make sure that the correct props are being passed between components. If we want to specify that a prop is optional we can declare it using the optional property "?". This means Typescript will remind us any time we attempt to use this variable that it could be `undefined`, so make sure to do some conditional rendering to prevent errors. 
+
+```tsx
+type Props = {
+  character: Character
+  optionalProperty?: string;
+}
+
+function CharacterCard({ character, optionalProperty }: Props) {
+  return (
+    <>
+      { optionalProperty && <p>{ optionalProperty }</p> }
+    </>
+  )
+};
+```
 
 ## Events
 
@@ -113,10 +159,6 @@ For some asynchronous functions, it is sometimes necessary to add a `.catch()` b
 It is possible to bypass Type checking by simply using the `any` type. That allows you to opt out of Typescript, but also negates all of its benefits. It's also worth noting that typescript can provide automatic documentation for your code, as the editor will automatically pick up the Type definitions. Anybody using your code will get [Intellisense](https://code.visualstudio.com/docs/editor/intellisense) on the shape and purpose of your variables and functions, making it more efficient to work collaboratively without having to read or write documentation. Hover over code to view further details.
 
 If you're fetching data from an external source, you should create custom Types to handle what you expect to receive. You should check what your API sends back for both a successful and failed response, then use a **JSON to Typescript Converter** to help you create your custom Type! Always review what the converter returns, and test it on multiple end-points to catch any properties that could have a hidden Union Type! Some good converters can be found [here](https://jsonformatter.org/json-to-typescript), [here](https://transform.tools/json-to-typescript), and [here](https://quicktype.io/typescript).
-
-## Understanding the types definitions
-
-TypeScript provides us a lot of information on type errors to help us understand what it is expecting. These errors might seem very hard to understand at first, but if you try to analyze them you will see that they provide you with a lot of information. [Here](https://ts-error-translator.vercel.app/) is a handy translator, if you find them unclear. 
 
 ## Links
 

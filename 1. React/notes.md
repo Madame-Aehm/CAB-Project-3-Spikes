@@ -14,7 +14,7 @@ The Pros of SPA seem to outweigh the Cons, but the biggest obstacle for SPA is m
 
 ## React
 
-A useful extension for VSCode snippets is:  **React/ReduES7x/GraphQL/React-native snippets**.
+A useful extension for VSCode snippets is:  **ES7+ React/Redux/React-Native snippets**.
 
 React was developed by Facebook to have live newsfeed updates without needing to update the entire page - isolate just the component that needs updating. The **framework** was released open source in 2013, but has since been redefined as a JavaScript **library**. The difference between a framework and a library is really just that a framework calls the code, but a library is called _by_ the code. We can have a regular vanilla JavaScript App that uses React for only one small component, but it's mostly used to build full SPAs. 
 
