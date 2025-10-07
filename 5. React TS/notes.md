@@ -76,6 +76,8 @@ Define a state to hold the array of Characters from the API:
 const [characters, setCharacters] = useState<Character[]>([])
 ```
 
+You should explicitly type the result of your fetch before setting the state. 
+
 ## Function components
 
 Let's create a new functional component for `CharacterCard.tsx`. We will name the file extension `.tsx` to specify that it's a React Typescript file. You might see in older tutorials/documentation the type `React.FunctionComponent` or `FC`, but this is generally agreed to be redundant. 
@@ -130,6 +132,21 @@ function CharacterCard({ character, optionalProperty }: Props) {
     <>
       { optionalProperty && <p>{ optionalProperty }</p> }
     </>
+  )
+};
+```
+
+If you are using the keyword `children` to pass JSX into your component, define your props by extending the existing Type `propsWithChildren`:
+
+```tsx
+interface Props extends PropsWithChildren {
+  value: string
+}
+
+function Example({ value, children }) {
+  console.log(value);
+  return (
+    <div>{ children }</div>
   )
 };
 ```
