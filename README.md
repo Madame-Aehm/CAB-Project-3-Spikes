@@ -1,16 +1,18 @@
+Supplementary notes and code samples for live-code demos (spikes) from my time teaching at Code Academy Berlin. All course content is now available [open source](https://github.com/CodeAcademyBerlin/content). 
+
 # Project 3
 
-## Spike 1 - Typescript Intro
+## Spike 1 - React Intro p1 (SPA, Vite, JSX, Functional Components, Strict Mode, Conditional Rendering, Looping, Props)
 
-## Spike 2 - React Intro p1 (SPA, Vite, JSX, Functional Components, Strict Mode, Conditional Rendering, Looping, Props)
+## Spike 2 - React Intro p2 (Events, State, Effects)
 
-## Spike 3 - React Intro p2 (Events, State, Effects)
-
-## Spike 4 - Styling in React (CSS Modules, Inline Style, CSS Libraries, Layout Components)
+## Spike 3 - Styling in React (CSS Modules, Inline Style, CSS Libraries, Layout Components)
 
 ## Present Rick & Morty App
 
-## Spike 5 - Typescript and React
+## Spike 4 - TypeScript Intro
+
+## Spike 5 - TypeScript and React
 
 ## Spike 6 - React Router Intro
 
@@ -36,4 +38,4 @@
   - what are you most proud of/what is your favourite feature or function?
   - what did you find the most challenging?
 
-## React App Deployment Tips
+## Spike 12 - React App Deployment Tips
