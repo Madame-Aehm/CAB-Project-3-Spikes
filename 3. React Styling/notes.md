@@ -2,7 +2,7 @@
 
 ## Styling in React
 
-Styling with `.css` files in React is a bit different than with an MPA as `.css` files are **imported**.  Due of the nested nature of Components, this makes applying Global Styles very easy, as CSS styles applied to the parent will also apply to the children. But once you get into deeper Components, avoiding conflict with selectors can be tricky.
+Styling with `.css` files in React is a bit different than with an MPA as `.css` files are **imported**.  Due to the nested nature of Components, this makes applying Global Styles very easy, as CSS styles applied to the parent will also apply to the children. But once you get into deeper Components, avoiding conflict with selectors can be tricky.
 
 ## CSS Modules
 
@@ -14,18 +14,12 @@ If you want to use CSS classes to do styling, make sure to use JSX `className`, 
 
 ## Inline Style
 
-React also allows [**inline styling**](https://www.w3schools.com/react/react_css.asp) with the `style` property. This property takes a JavaScript object - key/value pairs which represent the CSS property to be styled, and value. JSX requires **camelCase** keys, and **string** values. Writing the style directly into the element `style` property is helpful as VSCode will recognise and make suggestions for you. Once you have it styled how you like, if you want to clean your JSX and separate your style object, you can create a variable to hold that value and then pass that variable to the `style` property. 
+React also allows [**inline styling**](https://www.w3schools.com/react/react_css.asp) with the `style` property. This property takes a JavaScript object - key/value pairs which represent the CSS property to be styled, and value. JSX requires **camelCase** keys, and **string** values. Writing the style directly into the element `style` property is helpful as VSCode will recognize and make suggestions for you. Once you have it styled how you like, if you want to clean your JSX and separate your style object, you can create a variable to hold that value and then pass that variable to the `style` property. 
 
 If you choose to style this way, you can create a separate `styles.js` file and export all these variables to be used where you need them across your app. There are some major limitations to styling this way, however. Pseudoclasses and Media Queries, for example, cannot be used. 
 
 ## CSS Libraries
 
-If you would like to use a CSS library, they will usually have an npm package that you can install. They will then have finished React Components that you can import and use. Make sure to read the documentation. 
+If you would like to use a CSS library, such as [Bootstrap](https://react-bootstrap.netlify.app/docs/getting-started/introduction) or [Tailwind](https://v3.tailwindcss.com/docs/guides/vite), they will usually have an npm package that you can install. They will then have finished React Components that you can import and use. Make sure to read the documentation. 
 
 Alternatively, a library called [**Styled Components**](https://styled-components.com/) exists that let's you write CSS within your Component using template literals. This works very well [together](https://www.sipios.com/blog-tech/how-to-use-styled-components-with-material-ui-in-a-react-app) with [Material UI](https://mui.com/) CSS Library. 
-
-## Layout Components
-
-A Layout is just a regular Functional Component that can be wrapped around a page-level Component. One default property on a Component's `props` object is **children**, which refers to any content _between_ the Component's opening and closing tags. We've only been using self-closing Components up until now, but we can test passing data down through the `props.children`. For a layout Component, the `props.children` will be the page content of the page being wrapped by the layout. You can then build around it - relevant components, spacing, positioning, styling etc.
-
----> `rules: {'react/prop-types': "off"}` (disable prop-types until we cover Typescript)

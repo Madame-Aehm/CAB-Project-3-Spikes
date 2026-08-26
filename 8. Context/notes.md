@@ -59,15 +59,11 @@ The Provider exists as a property on my Context, so from the `main.tsx`, I can w
 The problem here though is that I don't have any of the data I want to pass as the value. I would have to write all the logic linked to my user in this Component so that I can pass it down. So we're going to create a new Component just to return the Provider. We can do this on the same `AuthContext.tsx` file, or you can create a new folder to hold all your Providers separate. I'm going to call this functional component `AuthContextProvider`, and then I can wrap _this_ around my App on `main.tsx`. I return the <AuthContext.Provider>, and put the `props.children` between the opening and closing tags. I now have somewhere I can write JavaScript to actually create and manipulate the variables and functions I would want to send with `value`. 
 
 ```ts
-type Props = {
-  children: ReactNode
-}
-
-export const AuthContextProvider = (props: Props) => {
+export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>(false)
   return (
     <AuthContext.Provider value={{ user }}>
-      { props.children }
+      { children }
     </AuthContext.Provider>
   )
 }

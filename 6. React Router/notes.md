@@ -71,6 +71,67 @@ There is a pre-made `<Link>` component that we can import from "react-router-dom
 <Link to="/about">About</Link>
 ```
 
+## Layout Routes
+
+The `children` property on Route objects and the `<Outlet />` component can also be used to make a consistent layout for your routes! Let's create a simple Layout component. Create a folder in `components` called `layouts`, and a file called `WithNav.tsx`. All we want to do is have our `<NavBar />` component at the top of most pages, without having to manually insert it into every page. We will use `props.children` in our `WithNav.tsx` to represent the content of whatever page component out layout is being passed. Since we know this will always be a `ReactNode`, we can apply this Type to the `children` property on the component's props. 
+
+```tsx
+import NavBar from "../NavBar"
+
+type Props = {
+  children: React.ReactNode
+}
+
+const WithNav = (props: Props) => {
+  return (
+    <>
+      <NavBar />
+      { props.children }
+    </>
+  )
+}
+
+export default WithNav
+```
+
+Now, back over on my `main.tsx`, I can create a "layout route". This is essentially a route with no `path`. The `children` will be any routes you wish the layout to apply to. In this case, I want my `<WithNav>` to apply to every page except my 404. (It might be a good idea to separate the sub-arrays into variables at this point, just for readability). The `<Outlet />` component represents the child element when the pathname matches, so I will pass it as children to my `<WithNav>` component by putting it between the opening and closing tags.
+
+```tsx
+const router = createBrowserRouter([
+  {
+    element: <Layout><Outlet /></Layout>,
+    children: [
+      {
+        path: "/",
+        element: <Homepage />
+      },
+      {
+        path: "/characters",
+        element: <Characters />
+      },
+      {
+        path: "/about",
+        element: <About />,
+        children: [
+          {
+            path: "developer",
+            element: <AboutDev />
+          },
+          {
+            path: "company",
+            element: <AboutCompany />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: "*",
+    element: <Error404 />
+  },
+])
+```
+
 ## useLocation()
 
 React Router Dom provides a few custom Hooks, `useLocation()` being one that provides information about the page. If we save this as a variable and log it to the console, we can have a look at it. The property `state` can be used to transfer some data through the `<Link>` component. Whatever is passed as state props, can then be accessed through `location.state` on the other end. Be aware though, that clicking the Link is necessary to trigger the transfer. If a user navigates to the page manually through the URL, or returns there with the back button, `state` will be `null`.
@@ -153,3 +214,30 @@ export default Error404
 ```
 
 Older [documentation](https://reactrouter.com/en/v6.3.0/getting-started/overview) with `<BrowserRouter>`, `<Routes>` and `<Route>` components.
+
+## Dynamic Routes (URL Parameters) with useParams()
+
+Some of you may have used **URL parameters** in your last project. If you didn't, you very likely used parameters in one or more of the endpoints from your API. "Parameters" or "params" refer to dynamic values in the URL that the file being requested can then access. 
+
+On the `Characters.tsx` component, let's make a fetch request to the Rick and Morty API. I have used a combination of [QuickType](https://app.quicktype.io/) and the [Character Schema](https://rickandmortyapi.com/documentation/#character-schema) supplied by the API docs to create some types in my `index.ts` in the `@types` folder (I manually create these - Vite doesn't include them in the boilerplate). 
+
+We can then make a small card component to display each character, like what we did for the practice challenge. But instead of opening a model, I'm going to link to a new page. This page will be a single component, but it will receive the character ID through the params. With that ID, the page will be able to make a fresh fetch request to the API for that specific character.
+
+In my pages folder, I will create a page component to be the landing page for my dynamic route. Then, in my `main.tsx`, I will add a route object for it in my router. I'm going to set the path to `"characters/:id"`. The **colon** ( **:** ) represents a dynamic value in a URL. I could make this a nested route of my "characters" route, but I don't want to mess about the with `<Outlet />`, so I'm going to just use an absolute route to mimic the connection.
+
+```tsx
+  {
+    path: "/characters/:id",
+      element: <Character />
+  },
+```
+
+Now in the `<Link>` from my character card, I will use template literals or string concatenation to create the path.
+
+```js
+<Link to={`characters/${c.id}`} >Learn more..</Link>
+```
+
+On the `Character.tsx` component, we can now use React Router's `useParams()` Hook to access that id! If we create a variable to take the return of the hook, we can view all our params. Since we have only one, it's a nice opportunity to **destructure** the return. Now that I've got the ID of the character, I can do a fetch for specifically that character. 
+
+Take care to either verify the ID before doing the fetch, or to add a conditional to catch any errors. In this case, I know that the ID will never be undefined, because if there is no ID, then my usual `"/characters/"` route will apply. But what if your user types something else? If there isn't a response from the API, have some conditional rendering to signal that to the user. 

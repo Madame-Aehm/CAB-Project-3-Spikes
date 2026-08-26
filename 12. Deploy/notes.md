@@ -80,13 +80,9 @@ npm run build
 
 If it fails, you will be given a list of errors to address. These will mostly be Typescript warnings, or unused variables. Fix them, and try again! When your build is successful, a new folder called "dist" will appear at the root of your project. If you look inside, you'll see that this is your `index.html`, any public assets (eg. icons, static images), and a large `.js` and `.css` file. This is all your components and React functionality compiled into regular JavaScript! 
 
-This folder should already be included in the `.gitignore` (Vite does this automatically). Commit and push so GitHub has the newest version without any errors. 
-
 ## Deploy with Firebase Hosting
 
 Since we used Firebase as a service to build this project, it makes sense that we deploy our project with [**Firebase Hosting!**](https://firebase.google.com/docs/hosting/quickstart) I used [this](https://medium.com/@rajdeepmallick999/vite-firebase-how-to-deploy-react-app-5e5090730147) article as a guide.
-
-**Note**: since Firebase Hosting is really only designed for static sites, there isn't anywhere to store values for the `.env` file. You'll have to put the config keys as strings directly. So long as security rules have been established, this is what Firebase intended. If you have any other variables that have to be stored in an `.env` file, you'll need to investigate Firebase [Cloud Functions](https://firebase.google.com/docs/functions/config-env?gen=2nd).
 
 You will first have to install the **Firebase CLI** (command line interface). We do this globally, so we can then run Firebase scripts from our terminal in any folder (mac users might have to precede script with `sudo`):
 
@@ -110,15 +106,13 @@ firebase init
 
 You will be prompted if you are ready to proceed. Yes (y) you are! From the list, you're going to go down to **Hosting: Configure files for Firebase Hosting** and click <kbd>spacebar</kbd> to select. Then <kbd>enter</kbd> to proceed. We want to use our Existing Project, so select `Use an existing project`, then select your Project from the list (unless you created multiples, you'll probably only have the one). 
 
-We then need to tell Firebase where to find our build folder. This is referring to the folder that is generated when we ran the build script earlier. For Vite, it is `dist`. Older boilerplates of React used `public`, so make sure to replace this value with `dist` before moving to the next step. We then want to say `Yes` to Configure as a single-page app (rewrite all urls to /index.html). This is the step that might give you trouble if you try to deploy on another platform! 
+We then need to tell Firebase where to find our build folder. This is referring to the folder that is generated when we ran the build script earlier. For Vite, it is `dist`. Older boilerplates of React used `public`, so make sure to replace this value with `dist` before moving to the next step. Anytime you make changes to your code and want to redeploy your app, you will need to run the build script again to update the code in this folder.
 
-We want to accept all prompts that suggest connecting this deployment to our GitHub. This will create a pipeline wherein whenever we push new changes to our deployment branch, Firebase will automatically redeploy with the most recent changes. 
+We then want to say `Yes` to Configure as a single-page app (rewrite all urls to /index.html). This is the step that might give you trouble if you try to deploy on another platform! 
 
-You will need to give a path to your repo which will look like YourGitHubUsername/RepositoryName. Easiest way is to go to GitHub, open the repo, and take it directly from the URL.
+We're going to ignore continuous integration with GitHub for this deployment method. If this is something you would like to explore, you will need to investigate Firebase [Cloud Functions](https://firebase.google.com/docs/functions/config-env?gen=2nd) to handle environment variables (since they cannot be pushed to GitHub.)
 
-You'll also need to specify which branch you would like to deploy. If you're happy to use the `main` branch, just click <kbd>enter</kbd>. 
-
-Finally, if you've still got the `dist` folder, you might be asked whether Firebase should overwrite this when it runs `ci install && npm run build`. **No, we don't want that!** Now deploy by running: 
+Finally, Firebase will detect that a `dist` folder already exists, and will ask whether it should overwrite this with a template. **No, we don't want that!** Now deploy by running: 
 
 ```
 firebase deploy
